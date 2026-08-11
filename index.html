@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="كتالوج المنتجات">
+<title>كتالوج المنتجات</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f6f8fb;color:#152238;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+header{background:#0c2b4d;color:#fff;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-size:24px;font-weight:800}.contact{font-size:14px}
+.hero{max-width:1250px;margin:20px auto;padding:42px 7%;border-radius:22px;background:linear-gradient(110deg,#edf3f8,#fff);box-shadow:0 5px 20px #0000000a}
+.hero h1{margin:0 0 10px;font-size:40px}.hero p{margin:0;color:#5f6b7a;font-size:18px;line-height:1.8}
+.wrap{max-width:1250px;margin:auto;padding:0 20px 35px}.tools{display:flex;gap:12px;margin:18px 0;flex-wrap:wrap}
+input,select{border:1px solid #d8dee7;background:#fff;border-radius:13px;padding:14px 16px;font-size:16px;outline:none}
+input{flex:1;min-width:230px}select{min-width:160px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.card{background:#fff;border:1px solid #e8ecf1;border-radius:18px;overflow:hidden;box-shadow:0 6px 20px #0000000c}
+.photo{height:205px;background:#eee;position:relative}.photo img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:12px;right:12px;color:#fff;padding:7px 12px;border-radius:20px;font-size:13px;font-weight:700}
+.ok{background:#249447}.no{background:#a83232}.body{padding:16px}
+.code{font-size:12px;color:#8994a3}h3{margin:7px 0;font-size:21px}.body p{color:#697585;line-height:1.7;min-height:55px;margin:8px 0}
+.price{font-size:22px;font-weight:800;color:#0c2b4d;margin-top:12px}
+.empty{display:none;text-align:center;background:#fff;padding:35px;border-radius:15px;color:#687382}
+footer{background:#0c2b4d;color:#fff;text-align:center;padding:20px}
+@media(max-width:650px){header{padding:14px 18px}.logo{font-size:20px}.contact{font-size:12px}.hero{margin:12px 12px 18px;padding:30px 22px}.hero h1{font-size:30px}.hero p{font-size:16px}.wrap{padding:0 12px 30px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:150px}.body{padding:12px}h3{font-size:16px}.body p{font-size:13px;min-height:62px}.price{font-size:17px}}
+</style>
+</head>
+<body>
+<header><div class="logo">كتالوج المنتجات</div><div class="contact">تواصل معنا عبر واتساب</div></header>
+<section class="hero"><h1>كتالوج منتجاتنا</h1><p>تصفح المنتجات والأسعار وحالة التوفر بسهولة من أي هاتف.</p></section>
+<main class="wrap">
+<div class="tools">
+<input id="search" type="search" placeholder="ابحث باسم المنتج أو الكود...">
+<select id="cat"><option value="">كل المنتجات</option><option value="مراتب">مراتب</option><option value="بطاطين">بطاطين</option><option value="وسائد">وسائد</option><option value="سجاد">سجاد</option></select>
+</div>
+<section class="grid" id="grid">
+    <article class="card" data-name="مرتبة 120×200" data-code="MAT001" data-cat="مراتب">
+      <div class="photo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAB4CAIAAADUhU+qAAADl0lEQVR4nO3dP0tyfRzH8a8hiBEJDVmPoM2glgYNiUgxAlvCoaGhtR5ADuEQTT2DhggHoaGkEowI+wdBi0MQBUEQVG461BCY9yCId/q5tuvSQ+/X0jlfz4HfoTe/46arVqsZ0E5PpxeA7uWu/0mlUp1dB7rK+vq6sXPgD9zNJ/Ve8Js1v0PYOSARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCA5NQ6v17uwsNA4XVxc9Hq9jdPt7W2Px1Mqlcxsf38/HA6Hw2G3210/2N3djcfjwWAwHo9XKhUzq1QqPyZmVi6Xl5aWfD7fv32yLuLUODwez8PDQ7VaNbNarfb09OTxeBqfHh4erq6u5nI5M5ufny8UCoVCoa+vr35wd3c3OTl5dXUVCoU2NzfNbGNj48fEzObm5sbHx10uVyeerys4NQ4zGxsbu729NbNisRgIBBrzz8/Pj4+P5eXlo6OjtjfmcrlEImFmiUTi+Pi47cTM9vb2VlZW/vZTdDMHxxGJRPL5vJnl8/lIJNKY5/P5aDQ6MjLy/Pz89fXVemOpVBoaGjKz4eHh+qundWJm9clv5uA4ZmZmTk9Pzezs7Gx6eroxz2az6XR6YmLi9fX1/Py8cwt0PAfHMTAw0NPT8/LyYmb9/f31YbVafXx8LBaLNzc3Ozs7bd8sfr///f3dzN7e3vx+f9sJzNFxmFk0Gk0mk83bxvX19ejoaP04FAqdnJy03hWLxTKZjJllMplYLNZ2AnN6HLOzs+l0uvnfmc1mp6am6se9vb2Dg4P39/c/7komkxcXF8Fg8PLycm1tre0E9uMXqR2kXC6bWSAQ+P7+bp5sbW01X9b8naN+gZn5fL6Dg4Pmy1onrXf9Qs7eOfBXEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIA9L/fh0ylUp1ah3oQuwckFy1Wq3Ta0CXYueA9B8SDwVzekhNLwAAAABJRU5ErkJggg==" alt="مرتبة 120×200"><span class="badge ok">متوفر</span></div>
+      <div class="body"><div class="code">MAT001</div><h3>مرتبة 120×200</h3>
+      <p>مرتبة سوست عالية الجودة، راحة ودعم مثالي للجسم</p><div class="price">850 ريال</div></div>
+    </article>
+    <article class="card" data-name="مرتبة 160×200" data-code="MAT002" data-cat="مراتب">
+      <div class="photo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAB4CAIAAADUhU+qAAAD4UlEQVR4nO3dzyt8exzH8fd3mppGk4UwLKyxQTYsjCShkRoLPxbKxlIsLGchC1H+AoWGLGYhmjA1kmaKUjaTlCillB9pFgoLNc1dzL2T+zWvexffLjP3+3xs5pz3ODmfevY5rM6PTCZjQD6O774BFC5n9mN2dvZ77wMFZWZmxtg58A+cH0+yveB39vEZws4BiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBqVjjcLvdQ0NDudPR0VG32507XV5edrlcj4+PZra9vd3R0dHR0eF0OrMH6+vrgUCgra0tEAg8Pz+b2fPz808TM1tdXfX5fE1NTfv7+1+7uEJRrHG4XK7Ly8t0Om1mmUzm+vra5XLlvt3Z2ZmcnIxGo2Y2MDAQj8fj8bjH48kenJ+ft7e3Hx0d+Xy++fl5M5ubm/tp8vT0tLa2lkgkwuHw1NTUN63ymxVrHGbW3Nx8enpqZslksqGhITd/e3t7fX0dHx/f3d3Ne2E0Gh0ZGTGzkZGRvb29vJNUKjUxMeFwOGpqalKp1BcspwAVcRw9PT2xWMzMYrFYT09Pbh6LxXp7e2tra29ubt7f3z9f+Pj4WFVVZWbV1dXZR8/nSV1d3eDgoJltbm729/d/yYIKThHH0d3dfXBwYGaHh4ddXV25eSQS2djYaG1tvbu7SyQSv/Irrq+vFxcXFxYWfvVei1MRx1FWVuZwOG5vb82stLQ0O0yn01dXV8lk8uTkJBQK5X2yeL3eh4cHM7u/v/d6vXknZvby8jI8PLyyslJRUfE1Kyo0RRyHmfX29gaDwY/bxvHxcWNjY/bY5/Pl/UfD7/eHw2EzC4fDfr8/7ySTyYyNjU1PT7e0tHzBQgqT899/pID19fUFg8Gzs7PcJBKJdHZ2Zo9LSkoqKysvLi7q6+s/XhUMBsfGxra2tsrLy9fW1vJOQqFQLBZLpVJLS0sej0f9bfv/9iOTydhf7yHmjdT4WEJxP1bwnyIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQekv706NPtmQCCLnQPSn++VBT5j54D0B00MJKHk/pOgAAAAAElFTkSuQmCC" alt="مرتبة 160×200"><span class="badge no">غير متوفر</span></div>
+      <div class="body"><div class="code">MAT002</div><h3>مرتبة 160×200</h3>
+      <p>مرتبة طبية مريحة لدعم الظهر والنوم العميق</p><div class="price">1,250 ريال</div></div>
+    </article>
+    <article class="card" data-name="مرتبة 180×200" data-code="MAT003" data-cat="مراتب">
+      <div class="photo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAB4CAIAAADUhU+qAAAD30lEQVR4nO3dzSt0fRzH8e8lZhpJkTz8BZMNRcrCaJKMUMaGWZANK/EPzEKK/AEsLHTlKVl5yEONpFFI2UwiUUopD8tZsJBp7sW578l9jc99L64w0/V+beac7zjN+dW737E7P5LJpAEfyfnuG0DmynU+xsbGvvc+kFFGR0eNnQP/Iff9idML/mTvnyHsHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCyNQ6Px9Pd3Z067e3t9Xg8qdPZ2Vm32/309GRma2trfr/f7/fn5uY6BwsLC8FgsKGhIRgMxuNxM4vH479MXl5eenp6/H5/bW3t9vb2l68vI2RrHG63++rqKpFImFkymby5uXG73alvNzc3R0ZGdnZ2zKyrqysajUaj0YKCAufg/Py8sbHx8PDQ5/NNTk6a2cTExC+T6enpurq6aDS6tbU1NDT0Tav8Ztkah5nV1NScnp6aWSwWq6qqSs1fXl6en58HBga2trY+vHBnZycUCplZKBRydoX0yeDg4MjIiJldXFzk5eV9/moyURbHEQgEIpGImUUikUAgkJpHIpHW1lav13t7e/v6+pp+4dPTU3l5uZlVVFQ4j570SVFRkcvl6uvr6+zsnJmZ+ZoVZZosjqOlpWVvb8/M9vf3m5ubU/ONjY2lpaX6+vr7+/uDg4Pf+YnFxcXl5eX5+fnfvdfslMVxFBcX5+Tk3N3dmVlhYaEzTCQS19fXsVjs5ORkbm7uwydLWVnZ4+OjmT08PJSVlX04GR4efnt7M7OOjg7+Ic1Kra2t4XD4/bZxdHRUXV3tHPt8vt3d3fSr2traVlZWzGxlZaWtre3DSTweX19fN7Pj42Ov1/vpK8lIuf//Jxmsvb09HA6fnZ2lJhsbG01NTc5xfn5+aWnp5eVlZWXl+6vC4XB/f//q6mpJSYnzyEifjI+P9/f3T01NuVyunz9/fuGaMsiPZDJp/7yHmDdS430J2f1YwaciDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHpH+9OtR5MyDgYOeA9Pd7ZYF07ByQ/gKOqSA8QVPNLQAAAABJRU5ErkJggg==" alt="مرتبة 180×200"><span class="badge ok">متوفر</span></div>
+      <div class="body"><div class="code">MAT003</div><h3>مرتبة 180×200</h3>
+      <p>مرتبة فندقية بمواصفات عالية وجودة ممتازة</p><div class="price">1,550 ريال</div></div>
+    </article></section>
+<div class="empty" id="empty">لا توجد منتجات مطابقة للبحث.</div>
+</main>
+<footer>جميع الحقوق محفوظة © كتالوج المنتجات</footer>
+<script>
+const s=document.getElementById('search'),c=document.getElementById('cat'),cards=[...document.querySelectorAll('.card')],empty=document.getElementById('empty');
+function filter(){
+ const q=s.value.trim().toLowerCase(),cat=c.value;let n=0;
+ cards.forEach(x=>{const ok=(!q||x.dataset.name.toLowerCase().includes(q)||x.dataset.code.toLowerCase().includes(q))&&(!cat||x.dataset.cat===cat);x.style.display=ok?'block':'none';if(ok)n++;});
+ empty.style.display=n?'none':'block';
+}
+s.addEventListener('input',filter);c.addEventListener('change',filter);
+</script>
+</body></html>
