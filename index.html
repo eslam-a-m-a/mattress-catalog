@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>كتالوج المراتب</title>
-
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#17223d}
 header{background:#024e4c;color:#fff;padding:12px;font-size:24px;font-weight:bold;text-align:center}
@@ -14,69 +13,51 @@ header{background:#024e4c;color:#fff;padding:12px;font-size:24px;font-weight:bol
 select{padding:10px;font-size:16px;margin:10px 0;width:100%}
 </style>
 </head>
-
 <body>
-
 <header>كتالوج المراتب</header>
-
 <div class="wrap">
-
-    <select id="filter">
-        <option value="">اختر نوع المرتبة</option>
-        <option value="سوست">سوست</option>
-        <option value="اسفنج">اسفنج</option>
-        <option value="طبي">طبي</option>
-    </select>
-
-    <div id="products"></div>
-
+<select id="filter">
+<option value="">اختر نوع المرتبة</option>
+<option value="سوست">سوست</option>
+<option value="اسفنج">اسفنج</option>
+<option value="طبي">طبي</option>
+</select>
+<div id="products"></div>
 </div>
-
 <!-- تحميل إعدادات Supabase -->
 <script src="config.js"></script>
-
 <!-- مكتبة Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
 <script>
 const client = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-
 // تحميل المنتجات
 async function loadProducts(type = "") {
-    let query = client.from("products").select("*").order("sort", { ascending: true });
-
-    if (type) query = query.eq("type", type);
-
-    const { data, error } = await query;
-
-    const box = document.getElementById("products");
-    box.innerHTML = "";
-
-    if (error || !data.length) {
-        box.innerHTML = "<p>لا يوجد منتجات</p>";
-        return;
-    }
-
-    data.forEach(item => {
-        box.innerHTML += `
-            <div class="item">
-                <img src="${item.image}">
-                <h3>${item.name}</h3>
-                <p>${item.description}</p>
-                <p><strong>السعر:</strong> ${item.price}</p>
-            </div>
-        `;
-    });
+let query = client.from("products").select("*").order("sort", { ascending: true });
+if (type) query = query.eq("type", type);
+const { data, error } = await query;
+const box = document.getElementById("products");
+box.innerHTML = "";
+if (error || !data.length) {
+box.innerHTML = "<p>لا يوجد منتجات</p>";
+return;
 }
-
+data.forEach(item => {
+box.innerHTML += `
+<div class="item">
+<img src="${item.image}">
+<h3>${item.name}</h3>
+<p>${item.description}</p>
+<p><strong>السعر:</strong> ${item.price}</p>
+</div>
+`;
+});
+}
 // عند تغيير الفلتر
 document.getElementById("filter").onchange = (e) => {
-    loadProducts(e.target.value);
+loadProducts(e.target.value);
 };
-
 // تحميل أولي
 loadProducts();
 </script>
-
 </body>
 </html>
