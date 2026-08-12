@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>لوحة التحكم</title>
-
 <style>
 body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#17223d}
 header{background:#024e4c;color:#fff;padding:12px;font-size:24px;font-weight:bold;text-align:center}
@@ -15,79 +14,61 @@ input,button{padding:10px;font-size:16px;margin:5px;width:100%}
 .item{background:#fff;padding:15px;margin:10px 0;border-radius:8px;box-shadow:0 0 5px #ccc}
 </style>
 </head>
-
 <body>
-
 <header>لوحة التحكم</header>
-
 <div class="wrap">
-
-    <!-- صندوق تسجيل الدخول -->
-    <div id="loginBox">
-        <h3>تسجيل الدخول</h3>
-        <input id="email" type="email" placeholder="البريد الإلكتروني">
-        <input id="password" type="password" placeholder="كلمة المرور">
-        <button id="loginBtn">دخول</button>
-        <p id="loginMsg" style="color:red"></p>
-    </div>
-
-    <!-- لوحة التحكم -->
-    <div id="panel">
-        <h3>إدارة المنتجات</h3>
-        <div id="products"></div>
-    </div>
-
+<!-- صندوق تسجيل الدخول -->
+<div id="loginBox">
+<h3>تسجيل الدخول</h3>
+<input id="email" type="email" placeholder="البريد الإلكتروني">
+<input id="password" type="password" placeholder="كلمة المرور">
+<button id="loginBtn">دخول</button>
+<p id="loginMsg" style="color:red"></p>
 </div>
-
+<!-- لوحة التحكم -->
+<div id="panel">
+<h3>إدارة المنتجات</h3>
+<div id="products"></div>
+</div>
+</div>
 <!-- تحميل إعدادات Supabase -->
 <script src="config.js"></script>
-
 <!-- مكتبة Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
 <script>
 const client = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-
 // تسجيل الدخول
 document.getElementById("loginBtn").onclick = async () => {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    const { data, error } = await client.auth.signInWithPassword({ email, password });
-
-    if (error) {
-        document.getElementById("loginMsg").textContent = "خطأ في تسجيل الدخول";
-        return;
-    }
-
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("panel").style.display = "block";
-    loadProducts();
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value.trim();
+const { data, error } = await client.auth.signInWithPassword({ email, password });
+if (error) {
+document.getElementById("loginMsg").textContent = "خطأ في تسجيل الدخول";
+return;
+}
+document.getElementById("loginBox").style.display = "none";
+document.getElementById("panel").style.display = "block";
+loadProducts();
 };
-
 // تحميل المنتجات
 async function loadProducts() {
-    const { data, error } = await client.from("products").select("*").order("sort", { ascending: true });
-
-    const box = document.getElementById("products");
-    box.innerHTML = "";
-
-    if (error || !data.length) {
-        box.innerHTML = "<p>لا يوجد منتجات</p>";
-        return;
-    }
-
-    data.forEach(item => {
-        box.innerHTML += `
-            <div class="item">
-                <h4>${item.name}</h4>
-                <p>${item.description}</p>
-                <p><strong>السعر:</strong> ${item.price}</p>
-            </div>
-        `;
-    });
+const { data, error } = await client.from("products").select("*").order("sort", { ascending: true });
+const box = document.getElementById("products");
+box.innerHTML = "";
+if (error || !data.length) {
+box.innerHTML = "<p>لا يوجد منتجات</p>";
+return;
+}
+data.forEach(item => {
+box.innerHTML += `
+<div class="item">
+<h4>${item.name}</h4>
+<p>${item.description}</p>
+<p><strong>السعر:</strong> ${item.price}</p>
+</div>
+`;
+});
 }
 </script>
-
 </body>
 </html>
