@@ -1,0 +1,1 @@
+قبل الرفع: افتح config.js وضع Project URL وPublishable Key من Supabase. لا تضع Secret/Service Role Key.
