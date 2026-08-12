@@ -1,4 +1,4 @@
 // Supabase configuration
 // ضع هنا الـ Project URL والـ anon public key من Supabase.
 window.SUPABASE_URL =https://wmiszhoahvfsbmedjrbm.supabase.co';
-window.SUPABASE_ANON_KEY =sb_publishable_fFclLm6Z2fdUTYxD_AAC5w_icPdd_n5';
+window.SUPABASE_ANON_KEY =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtaXN6aG9haHZmc2JtZWRqcmJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTUwODQsImV4cCI6MjEwMjA5MTA4NH0.NRdVz5Gpmsoj-VGhPVWTMwqSvAvC5Vg-8o1BEmYPJHI
