@@ -1,12 +1,82 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>بيت المراتب | كتالوج المنتجات</title>
-<style>body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#172238}header{background:#0d2a4a;color:#fff;padding:18px;font-size:24px;font-weight:bold}.wrap{max-width:1100px;margin:auto;padding:20px}.tools{display:flex;gap:10px;margin:15px 0}input,select{padding:12px;border:1px solid #ddd;border-radius:10px;font-size:15px}input{flex:1}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 3px 15px #0001}.photo{height:190px;background:#eee;position:relative}.photo img{width:100%;height:100%;object-fit:cover}.badge{position:absolute;top:10px;right:10px;color:#fff;padding:7px 12px;border-radius:20px}.ok{background:#249447}.no{background:#a83232}.body{padding:15px}.body p{color:#687585;line-height:1.7}.price{font-size:21px;font-weight:bold;color:#0d2a4a}.empty{text-align:center;padding:50px;color:#687585}.loading{text-align:center;padding:50px}</style>
-</head><body><header>بيت المراتب — كتالوج المنتجات</header><main class="wrap"><div class="tools"><input id="s" placeholder="ابحث عن المنتج بالاسم أو الكود..."><select id="c"><option value="">كل التصنيفات</option></select></div><div id="msg" class="loading">جاري تحميل المنتجات...</div><div class="grid" id="g"></div></main>
-<script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-const {createClient}=supabase;const client=createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY);let p=[];
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-function imageUrl(x){if(!x)return '';if(/^https?:\/\//i.test(x))return x;return client.storage.from('product-images').getPublicUrl(x).data.publicUrl}
-function render(){const q=s.value.trim().toLowerCase(),cat=c.value;const rows=p.filter(x=>(!q||String(x.name||'').toLowerCase().includes(q)||String(x.code||'').toLowerCase().includes(q))&&(!cat||x.category===cat));c.innerHTML='<option value="">كل التصنيفات</option>'+[...new Set(p.map(x=>x.category).filter(Boolean))].sort().map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');c.value=cat;g.innerHTML=rows.map(x=>{const available=x.available!==false;const img=imageUrl(x.image_url);return `<article class="card"><div class="photo">${img?`<img loading="lazy" src="${esc(img)}" alt="${esc(x.name)}">`:''}<span class="badge ${available?'ok':'no'}">${available?'متوفر':'غير متوفر'}</span></div><div class="body"><small>${esc(x.code)}</small><h3>${esc(x.name)}</h3><p>${esc(x.description||'')}</p><div class="price">${esc(x.price)} ريال</div></div></article>`}).join('');msg.className=rows.length?'':'empty';msg.textContent=rows.length?'': 'لا توجد منتجات مطابقة للبحث.';}
-async function load(){const {data,error}=await client.from('products').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:false});if(error){msg.className='empty';msg.textContent='تعذر تحميل المنتجات. تأكد من إعداد SUPABASE_ANON_KEY في config.js.';console.error(error);return}p=data||[];render()}s.oninput=render;c.onchange=render;load();
-</script></body></html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>كتالوج المراتب</title>
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#17223d}
+header{background:#024e4c;color:#fff;padding:12px;font-size:24px;font-weight:bold;text-align:center}
+.wrap{max-width:1100px;margin:auto;padding:20px}
+.item{background:#fff;padding:15px;margin:10px 0;border-radius:8px;box-shadow:0 0 5px #ccc}
+.item img{width:100%;max-width:300px;border-radius:8px;margin-bottom:10px}
+select{padding:10px;font-size:16px;margin:10px 0;width:100%}
+</style>
+</head>
+
+<body>
+
+<header>كتالوج المراتب</header>
+
+<div class="wrap">
+
+    <select id="filter">
+        <option value="">اختر نوع المرتبة</option>
+        <option value="سوست">سوست</option>
+        <option value="اسفنج">اسفنج</option>
+        <option value="طبي">طبي</option>
+    </select>
+
+    <div id="products"></div>
+
+</div>
+
+<!-- تحميل إعدادات Supabase -->
+<script src="config.js"></script>
+
+<!-- مكتبة Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const client = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+
+// تحميل المنتجات
+async function loadProducts(type = "") {
+    let query = client.from("products").select("*").order("sort", { ascending: true });
+
+    if (type) query = query.eq("type", type);
+
+    const { data, error } = await query;
+
+    const box = document.getElementById("products");
+    box.innerHTML = "";
+
+    if (error || !data.length) {
+        box.innerHTML = "<p>لا يوجد منتجات</p>";
+        return;
+    }
+
+    data.forEach(item => {
+        box.innerHTML += `
+            <div class="item">
+                <img src="${item.image}">
+                <h3>${item.name}</h3>
+                <p>${item.description}</p>
+                <p><strong>السعر:</strong> ${item.price}</p>
+            </div>
+        `;
+    });
+}
+
+// عند تغيير الفلتر
+document.getElementById("filter").onchange = (e) => {
+    loadProducts(e.target.value);
+};
+
+// تحميل أولي
+loadProducts();
+</script>
+
+</body>
+</html>
