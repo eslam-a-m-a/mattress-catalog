@@ -1,112 +1,93 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>لوحة تحكم كتالوج بيت المرتب</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة التحكم</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      color: #172733;
-      padding: 20px;
-      font-size: 20px;
-    }
-    .hidden { display: none; }
-    input, button {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 12px;
-      font-size: 18px;
-    }
-    #products div {
-      background: #fff;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      box-shadow: 0 0 4px #ccc;
-    }
-  </style>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#17223d}
+header{background:#024e4c;color:#fff;padding:12px;font-size:24px;font-weight:bold;text-align:center}
+.wrap{max-width:900px;margin:auto;padding:20px}
+input,button{padding:10px;font-size:16px;margin:5px;width:100%}
+#loginBox{background:#fff;padding:20px;border-radius:8px;box-shadow:0 0 10px #ccc}
+#panel{display:none}
+.item{background:#fff;padding:15px;margin:10px 0;border-radius:8px;box-shadow:0 0 5px #ccc}
+</style>
 </head>
 
 <body>
 
-  <h1>لوحة تحكم كتالوج بيت المرتب</h1>
+<header>لوحة التحكم</header>
 
-  <!-- شاشة تسجيل الدخول -->
-  <div id="login">
-    <input id="email" type="email" placeholder="البريد الإلكتروني">
-    <input id="password" type="password" placeholder="كلمة المرور">
-    <button id="loginBtn">تسجيل الدخول</button>
-  </div>
+<div class="wrap">
 
-  <!-- التطبيق بعد تسجيل الدخول -->
-  <div id="app" class="hidden">
-    <button id="logoutBtn">تسجيل الخروج</button>
+    <!-- صندوق تسجيل الدخول -->
+    <div id="loginBox">
+        <h3>تسجيل الدخول</h3>
+        <input id="email" type="email" placeholder="البريد الإلكتروني">
+        <input id="password" type="password" placeholder="كلمة المرور">
+        <button id="loginBtn">دخول</button>
+        <p id="loginMsg" style="color:red"></p>
+    </div>
 
-    <h2>المنتجات</h2>
-    <div id="products"></div>
-  </div>
+    <!-- لوحة التحكم -->
+    <div id="panel">
+        <h3>إدارة المنتجات</h3>
+        <div id="products"></div>
+    </div>
 
-  <!-- تحميل إعدادات Supabase -->
-  <script src="config.js"></script>
+</div>
 
-  <!-- تحميل مكتبة Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<!-- تحميل إعدادات Supabase -->
+<script src="config.js"></script>
 
-  <script>
-    // إنشاء عميل Supabase باستخدام config.js
-    const client = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+<!-- مكتبة Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-    // تسجيل الدخول
-    document.getElementById("loginBtn").onclick = async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+<script>
+const client = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
 
-      const { data, error } = await client.auth.signInWithPassword({ email, password });
+// تسجيل الدخول
+document.getElementById("loginBtn").onclick = async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-      if (error) {
-        alert("خطأ: " + error.message);
-      } else {
-        showApp();
-        loadProducts();
-      }
-    };
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
 
-    // تسجيل الخروج
-    document.getElementById("logoutBtn").onclick = async () => {
-      await client.auth.signOut();
-      hideApp();
-    };
-
-    // إظهار التطبيق
-    function showApp() {
-      document.getElementById("login").classList.add("hidden");
-      document.getElementById("app").classList.remove("hidden");
-    }
-
-    // إخفاء التطبيق
-    function hideApp() {
-      document.getElementById("login").classList.remove("hidden");
-      document.getElementById("app").classList.add("hidden");
-    }
-
-    // تحميل المنتجات من Supabase
-    async function loadProducts() {
-      const { data, error } = await client.from("products").select("*");
-
-      if (error) {
-        alert("خطأ في تحميل المنتجات: " + error.message);
+    if (error) {
+        document.getElementById("loginMsg").textContent = "خطأ في تسجيل الدخول";
         return;
-      }
-
-      const container = document.getElementById("products");
-      container.innerHTML = data.map(p => `<div>${p.name}</div>`).join("");
     }
-  </script>
+
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("panel").style.display = "block";
+    loadProducts();
+};
+
+// تحميل المنتجات
+async function loadProducts() {
+    const { data, error } = await client.from("products").select("*").order("sort", { ascending: true });
+
+    const box = document.getElementById("products");
+    box.innerHTML = "";
+
+    if (error || !data.length) {
+        box.innerHTML = "<p>لا يوجد منتجات</p>";
+        return;
+    }
+
+    data.forEach(item => {
+        box.innerHTML += `
+            <div class="item">
+                <h4>${item.name}</h4>
+                <p>${item.description}</p>
+                <p><strong>السعر:</strong> ${item.price}</p>
+            </div>
+        `;
+    });
+}
+</script>
 
 </body>
 </html>
