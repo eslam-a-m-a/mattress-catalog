@@ -1,1 +1,771 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>بيت المراتب</title><style>body{font-family:Arial;margin:0;background:#f6f6f6;color:#222}header{background:#111;color:#fff;padding:20px;text-align:center}main{max-width:1100px;margin:auto;padding:20px}.controls{display:flex;gap:10px;margin-bottom:20px}.controls>*{padding:12px;border:1px solid #ddd;border-radius:8px;flex:1}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px #0001}.card img{width:100%;height:220px;object-fit:cover}.info{padding:14px}.price{font-size:20px;font-weight:bold}.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#e8f7e8;color:#16801d}.off{background:#eee;color:#777}</style></head><body><header><h1>بيت المراتب</h1><div>الكتالوج الإلكتروني</div></header><main><div class="controls"><input id="search" placeholder="ابحث عن صنف..."><select id="category"><option value="">كل التصنيفات</option></select></div><div id="status">جاري التحميل...</div><div id="grid" class="grid"></div></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script>const db=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);let products=[];const grid=document.getElementById('grid'),status=document.getElementById('status'),search=document.getElementById('search'),category=document.getElementById('category');function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}async function load(){const r=await db.from('products').select('*').order('sort_order').order('name');if(r.error){status.textContent=r.error.message;return}products=r.data||[];[...new Set(products.map(x=>x.category).filter(Boolean))].forEach(c=>category.insertAdjacentHTML('beforeend',`<option value="${esc(c)}">${esc(c)}</option>`));render()}function render(){let q=search.value.toLowerCase(),c=category.value;let a=products.filter(p=>(!q||[p.name,p.code,p.description,p.category].join(' ').toLowerCase().includes(q))&&(!c||p.category===c));status.textContent='عدد المنتجات: '+a.length;grid.innerHTML=a.map(p=>`<article class="card">${p.image_url?`<img src="${esc(p.image_url)}" alt="${esc(p.name)}">`:''}<div class="info"><h3>${esc(p.name)}</h3><div>${esc(p.description)}</div><p class="price">${p.price??''} ريال</p><span class="badge ${p.available?'':'off'}">${p.available?'متوفر':'غير متوفر'}</span></div></article>`).join('')}search.oninput=render;category.onchange=render;load();</script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>شركة بيت المراتب للمفروشات | الكتالوج</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,Tahoma,sans-serif;
+background:#f5f6f8;
+color:#222
+}
+
+header{
+background:linear-gradient(135deg,#111,#292929);
+color:#fff;
+padding:22px 16px;
+position:sticky;
+top:0;
+z-index:20;
+box-shadow:0 2px 12px #0003
+}
+
+.header-inner{
+max-width:1200px;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:12px
+}
+
+.logo{
+width:52px;
+height:52px;
+border-radius:12px;
+background:#fff;
+color:#111;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:18px
+}
+
+.brand h1{
+margin:0;
+font-size:22px
+}
+
+.brand p{
+margin:4px 0 0;
+color:#ddd;
+font-size:13px
+}
+
+.header-buttons{
+display:flex;
+gap:8px
+}
+
+.header-buttons a{
+text-decoration:none;
+color:#fff;
+padding:10px 14px;
+border-radius:8px;
+font-weight:bold;
+font-size:14px
+}
+
+.call-btn{background:#333}
+
+.whatsapp-btn{background:#168c3a}
+
+main{
+max-width:1200px;
+margin:auto;
+padding:25px 16px 50px
+}
+
+.hero{
+background:#fff;
+border-radius:18px;
+padding:28px;
+margin-bottom:20px;
+box-shadow:0 3px 15px #0000000d
+}
+
+.hero h2{
+margin:0 0 8px;
+font-size:28px
+}
+
+.hero p{
+margin:0;
+color:#666;
+line-height:1.8
+}
+
+.controls{
+background:#fff;
+padding:15px;
+border-radius:14px;
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:10px;
+margin-bottom:20px;
+box-shadow:0 2px 10px #0000000d
+}
+
+.controls input,
+.controls select{
+width:100%;
+padding:13px;
+border:1px solid #ddd;
+border-radius:9px;
+font-size:15px;
+background:#fff
+}
+
+.status{
+margin-bottom:15px;
+color:#666;
+font-size:14px
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+gap:18px
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 3px 15px #00000012;
+transition:.2s;
+display:flex;
+flex-direction:column
+}
+
+.card:hover{
+transform:translateY(-3px);
+box-shadow:0 7px 20px #00000018
+}
+
+.product-image{
+width:100%;
+height:240px;
+object-fit:cover;
+display:block;
+background:#eee
+}
+
+.no-image{
+height:240px;
+background:#eee;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#999
+}
+
+.info{
+padding:16px;
+display:flex;
+flex-direction:column;
+flex:1
+}
+
+.category{
+font-size:12px;
+color:#777;
+margin-bottom:7px
+}
+
+.info h3{
+margin:0 0 8px;
+font-size:19px
+}
+
+.description{
+color:#666;
+font-size:14px;
+line-height:1.7;
+min-height:45px
+}
+
+.price{
+font-size:21px;
+font-weight:bold;
+margin:12px 0
+}
+
+.available{
+display:inline-block;
+width:max-content;
+padding:6px 10px;
+border-radius:20px;
+background:#e7f7eb;
+color:#16803a;
+font-size:13px;
+margin-bottom:12px
+}
+
+.unavailable{
+display:inline-block;
+width:max-content;
+padding:6px 10px;
+border-radius:20px;
+background:#eee;
+color:#777;
+font-size:13px;
+margin-bottom:12px
+}
+
+.order-btn{
+display:block;
+text-align:center;
+text-decoration:none;
+background:#168c3a;
+color:#fff;
+padding:12px;
+border-radius:9px;
+font-weight:bold;
+margin-top:auto
+}
+
+.order-btn:hover{
+background:#11732f
+}
+
+.empty{
+background:#fff;
+border-radius:15px;
+padding:40px;
+text-align:center;
+color:#777
+}
+
+footer{
+background:#111;
+color:#fff;
+padding:30px 16px;
+margin-top:30px
+}
+
+.footer-inner{
+max-width:1200px;
+margin:auto;
+text-align:center
+}
+
+.footer-inner h3{
+margin-top:0
+}
+
+.footer-inner p{
+color:#ccc
+}
+
+.footer-buttons{
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap
+}
+
+.footer-buttons a{
+text-decoration:none;
+color:#fff;
+padding:11px 18px;
+border-radius:9px
+}
+
+.footer-call{background:#333}
+
+.footer-whatsapp{background:#168c3a}
+
+.floating-whatsapp{
+position:fixed;
+bottom:20px;
+left:20px;
+width:58px;
+height:58px;
+border-radius:50%;
+background:#168c3a;
+color:#fff;
+text-decoration:none;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:bold;
+box-shadow:0 4px 15px #0004;
+z-index:50
+}
+
+@media(max-width:700px){
+
+header{padding:15px 12px}
+
+.header-inner{
+flex-direction:column;
+align-items:stretch
+}
+
+.brand{
+justify-content:center
+}
+
+.brand h1{
+font-size:19px;
+text-align:center
+}
+
+.brand p{
+text-align:center
+}
+
+.header-buttons{
+justify-content:center
+}
+
+.header-buttons a{
+flex:1;
+text-align:center
+}
+
+.hero{
+padding:20px
+}
+
+.hero h2{
+font-size:23px
+}
+
+.controls{
+grid-template-columns:1fr
+}
+
+.grid{
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:10px
+}
+
+.product-image,
+.no-image{
+height:170px
+}
+
+.info{
+padding:11px
+}
+
+.info h3{
+font-size:16px
+}
+
+.description{
+font-size:12px
+}
+
+.price{
+font-size:17px
+}
+
+.order-btn{
+font-size:13px;
+padding:10px
+}
+
+}
+
+@media(max-width:400px){
+
+.grid{
+grid-template-columns:1fr
+}
+
+.product-image,
+.no-image{
+height:230px
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="header-inner">
+
+<div class="brand">
+
+<div class="logo">
+بيت
+</div>
+
+<div>
+<h1>شركة بيت المراتب للمفروشات</h1>
+<p>مراتب ومفروشات</p>
+</div>
+
+</div>
+
+<div class="header-buttons">
+
+<a
+class="call-btn"
+href="tel:+966546510165">
+اتصال
+</a>
+
+<a
+class="whatsapp-btn"
+href="https://wa.me/966546510165"
+target="_blank">
+واتساب
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+<h2>
+كتالوج شركة بيت المراتب للمفروشات
+</h2>
+
+<p>
+تصفح منتجات شركة بيت المراتب للمفروشات،
+واختر المنتج المناسب لك، ويمكنك التواصل معنا مباشرة عبر الواتساب للاستفسار أو الطلب.
+</p>
+
+</section>
+
+<div class="controls">
+
+<input
+id="search"
+placeholder="ابحث عن منتج..."
+>
+
+<select id="category">
+
+<option value="">
+كل التصنيفات
+</option>
+
+</select>
+
+</div>
+
+<div
+id="status"
+class="status">
+جاري تحميل المنتجات...
+</div>
+
+<div
+id="grid"
+class="grid">
+</div>
+
+</main>
+
+<footer>
+
+<div class="footer-inner">
+
+<h3>
+شركة بيت المراتب للمفروشات
+</h3>
+
+<p>
+للاستفسار والطلبات تواصل معنا
+</p>
+
+<div class="footer-buttons">
+
+<a
+class="footer-call"
+href="tel:+966546510165">
+اتصال: 0546510165
+</a>
+
+<a
+class="footer-whatsapp"
+href="https://wa.me/966546510165"
+target="_blank">
+التواصل عبر واتساب
+</a>
+
+</div>
+
+</div>
+
+</footer>
+
+<a
+class="floating-whatsapp"
+href="https://wa.me/966546510165"
+target="_blank"
+title="تواصل معنا عبر واتساب">
+W
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="config.js"></script>
+
+<script>
+
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+let products=[];
+
+const grid=document.getElementById('grid');
+const status=document.getElementById('status');
+const search=document.getElementById('search');
+const category=document.getElementById('category');
+
+function esc(v){
+
+return String(v??'')
+.replace(
+/[&<>"']/g,
+m=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#039;'
+}[m])
+);
+
+}
+
+async function load(){
+
+status.textContent='جاري تحميل المنتجات...';
+
+const r=
+await db
+.from('products')
+.select('*')
+.order('sort_order')
+.order('name');
+
+if(r.error){
+
+console.error(r.error);
+
+status.textContent=
+'تعذر تحميل المنتجات: '+r.error.message;
+
+return;
+
+}
+
+products=r.data||[];
+
+const categories=[
+...new Set(
+products
+.map(x=>x.category)
+.filter(Boolean)
+)
+];
+
+category.innerHTML=
+'<option value="">كل التصنيفات</option>';
+
+categories.forEach(c=>{
+
+category.insertAdjacentHTML(
+'beforeend',
+`
+<option value="${esc(c)}">
+${esc(c)}
+</option>
+`
+);
+
+});
+
+render();
+
+}
+
+function render(){
+
+const q=
+search.value.trim().toLowerCase();
+
+const c=category.value;
+
+const filtered=
+products.filter(p=>{
+
+const text=[
+p.name,
+p.code,
+p.description,
+p.category
+]
+.join(' ')
+.toLowerCase();
+
+return(
+(!q||text.includes(q))&&
+(!c||p.category===c)
+);
+
+});
+
+status.textContent=
+'عدد المنتجات: '+filtered.length;
+
+if(!filtered.length){
+
+grid.innerHTML=
+`
+<div class="empty">
+لا توجد منتجات مطابقة للبحث
+</div>
+`;
+
+return;
+
+}
+
+grid.innerHTML=
+filtered.map(p=>{
+
+const image=
+p.image_url
+?
+`
+<img
+class="product-image"
+src="${esc(p.image_url)}"
+alt="${esc(p.name)}"
+loading="lazy">
+`
+:
+`
+<div class="no-image">
+لا توجد صورة
+</div>
+`;
+
+const whatsappText=
+encodeURIComponent(
+'السلام عليكم، أريد الاستفسار عن المنتج: '+
+(p.name||'')+
+(p.code?' - كود: '+p.code:'')
+);
+
+return`
+
+<article class="card">
+
+${image}
+
+<div class="info">
+
+${
+p.category
+?
+`
+<div class="category">
+${esc(p.category)}
+</div>
+`
+:''
+}
+
+<h3>
+${esc(p.name)}
+</h3>
+
+${
+p.description
+?
+`
+<div class="description">
+${esc(p.description)}
+</div>
+`
+:''
+}
+
+${
+p.price!==null &&
+p.price!==undefined &&
+p.price!==''
+?
+`
+<div class="price">
+${esc(p.price)} ريال
+</div>
+`
+:''
+}
+
+<span class="${
+p.available
+?'available'
+:'unavailable'
+}">
+${
+p.available
+?'متوفر'
+:'غير متوفر'
+}
+</span>
+
+<a
+class="order-btn"
+href="https://wa.me/966546510165?text=${whatsappText}"
+target="_blank">
+استفسر عبر واتساب
+</a>
+
+</div>
+
+</article>
+
+`;
+
+}).join('');
+
+}
+
+search.oninput=render;
+category.onchange=render;
+
+load();
+
+</script>
+
+</body>
+</html>
