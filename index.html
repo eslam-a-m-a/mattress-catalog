@@ -8,7 +8,10 @@
 <title>شركة بيت المراتب للمفروشات</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
@@ -56,8 +59,6 @@ max-width:1200px;
 margin:auto;
 padding:20px;
 }
-
-/* الإعلانات */
 
 .ads{
 margin-bottom:25px;
@@ -107,8 +108,6 @@ border-radius:9px;
 font-weight:bold;
 }
 
-/* البحث */
-
 .controls{
 background:#fff;
 padding:15px;
@@ -131,6 +130,7 @@ font:inherit;
 .status{
 margin-bottom:15px;
 color:#667085;
+font-weight:bold;
 }
 
 .grid{
@@ -218,6 +218,16 @@ border-radius:15px;
 color:#667085;
 }
 
+.error-box{
+background:#fff1f1;
+color:#b00020;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+line-height:1.8;
+word-break:break-word;
+}
+
 footer{
 margin-top:40px;
 background:#073b73;
@@ -303,6 +313,7 @@ height:220px;
 }
 
 }
+
 </style>
 
 </head>
@@ -371,6 +382,13 @@ class="status">
 
 
 <div
+id="errorBox"
+class="error-box"
+style="display:none;">
+</div>
+
+
+<div
 id="grid"
 class="grid">
 </div>
@@ -401,7 +419,9 @@ target="_blank">
 
 <script>
 
-/* اتصال Supabase مباشرة */
+/* =====================================
+   بيانات Supabase
+===================================== */
 
 const SUPABASE_URL =
 "https://wmiszhoahvfsbmedjrbm.supabase.co";
@@ -410,6 +430,8 @@ const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_fFclLm6Z2fdUTYxD_AAC5w_icPdd_n5";
 
 
+/* إنشاء الاتصال */
+
 const db =
 supabase.createClient(
 SUPABASE_URL,
@@ -417,8 +439,12 @@ SUPABASE_PUBLISHABLE_KEY
 );
 
 
-let products=[];
-let ads=[];
+/* =====================================
+   المتغيرات
+===================================== */
+
+let products = [];
+let ads = [];
 
 
 const grid =
@@ -426,6 +452,9 @@ document.getElementById('grid');
 
 const status =
 document.getElementById('status');
+
+const errorBox =
+document.getElementById('errorBox');
 
 const search =
 document.getElementById('search');
@@ -437,14 +466,18 @@ const adsContainer =
 document.getElementById('adsContainer');
 
 
-/* حماية النصوص */
+/* =====================================
+   حماية النصوص
+===================================== */
 
-function esc(v){
+function esc(value){
 
-return String(v ?? '')
+return String(value ?? '')
 .replace(
 /[&<>"']/g,
-m=>({
+function(m){
+
+return {
 
 '&':'&amp;',
 '<':'&lt;',
@@ -452,18 +485,25 @@ m=>({
 '"':'&quot;',
 "'":'&#039;'
 
-}[m])
+}[m];
+
+}
 );
 
 }
 
 
-/* تحميل المنتجات */
+/* =====================================
+   تحميل المنتجات
+===================================== */
 
 async function loadProducts(){
 
 status.textContent =
-'جاري تحميل المنتجات...';
+'جاري الاتصال بقاعدة البيانات...';
+
+errorBox.style.display =
+'none';
 
 
 try{
@@ -471,20 +511,10 @@ try{
 const r =
 await db
 .from('products')
-.select('*')
-.order(
-'sort_order',
-{
-ascending:true
-}
-)
-.order(
-'name',
-{
-ascending:true
-}
-);
+.select('*');
 
+
+/* عرض نتيجة الاتصال في Console */
 
 console.log(
 'PRODUCT RESULT:',
@@ -492,22 +522,76 @@ r
 );
 
 
+/* إذا كان هناك خطأ */
+
 if(r.error){
 
+console.error(
+'SUPABASE ERROR:',
+r.error
+);
+
 status.textContent =
-'خطأ في تحميل المنتجات: ' +
-r.error.message;
+'تعذر تحميل المنتجات';
+
+errorBox.style.display =
+'block';
+
+errorBox.innerHTML =
+'<b>خطأ Supabase:</b><br>' +
+esc(r.error.message);
 
 return;
 
 }
 
 
+/* البيانات */
+
 products =
 r.data || [];
 
 
-/* التصنيفات */
+/* تشخيص عدد المنتجات */
+
+console.log(
+'عدد المنتجات التي وصلت من Supabase:',
+products.length
+);
+
+console.log(
+'المنتجات:',
+products
+);
+
+
+/* عرض عدد المنتجات */
+
+status.textContent =
+'عدد المنتجات التي وصلت من قاعدة البيانات: ' +
+products.length;
+
+
+/* إذا لم توجد منتجات */
+
+if(products.length === 0){
+
+grid.innerHTML = `
+<div class="empty">
+
+قاعدة البيانات لم ترسل أي منتجات.
+
+</div>
+`;
+
+return;
+
+}
+
+
+/* =====================================
+   التصنيفات
+===================================== */
 
 category.innerHTML =
 '<option value="">كل التصنيفات</option>';
@@ -516,11 +600,15 @@ category.innerHTML =
 [
 ...new Set(
 products
-.map(x=>x.category)
+.map(function(product){
+
+return product.category;
+
+})
 .filter(Boolean)
 )
 ]
-.forEach(c=>{
+.forEach(function(c){
 
 category.insertAdjacentHTML(
 'beforeend',
@@ -536,22 +624,36 @@ ${esc(c)}
 });
 
 
+/* عرض المنتجات */
+
 render();
 
 
 }catch(error){
 
-console.error(error);
+console.error(
+'JAVASCRIPT ERROR:',
+error
+);
 
 status.textContent =
-'حدث خطأ أثناء تحميل المنتجات';
+'حدث خطأ في الصفحة';
+
+errorBox.style.display =
+'block';
+
+errorBox.innerHTML =
+'<b>خطأ JavaScript:</b><br>' +
+esc(error.message);
 
 }
 
 }
 
 
-/* عرض المنتجات */
+/* =====================================
+   عرض المنتجات
+===================================== */
 
 function render(){
 
@@ -560,12 +662,12 @@ search.value
 .toLowerCase()
 .trim();
 
-const c =
+const selectedCategory =
 category.value;
 
 
 const result =
-products.filter(p=>{
+products.filter(function(p){
 
 const text =
 [
@@ -578,10 +680,21 @@ p.category
 .toLowerCase();
 
 
-return
-(!q || text.includes(q))
+return (
+
+!q ||
+text.includes(q)
+
+)
+
 &&
-(!c || p.category===c);
+
+(
+
+!selectedCategory ||
+p.category === selectedCategory
+
+);
 
 });
 
@@ -591,12 +704,16 @@ status.textContent =
 result.length;
 
 
-if(!result.length){
+if(result.length === 0){
 
 grid.innerHTML = `
+
 <div class="empty">
-لا توجد منتجات مطابقة للبحث
+
+لا توجد منتجات مطابقة للبحث.
+
 </div>
+
 `;
 
 return;
@@ -605,7 +722,10 @@ return;
 
 
 grid.innerHTML =
-result.map(p=>`
+result
+.map(function(p){
+
+return `
 
 <article class="card">
 
@@ -629,7 +749,9 @@ alt="${esc(p.name)}">
 `
 }
 
+
 <div class="info">
+
 
 <h3>
 ${esc(p.name)}
@@ -638,32 +760,50 @@ ${esc(p.name)}
 
 ${
 p.code
+
 ?
+
 `
 <div class="category">
-كود المنتج: ${esc(p.code)}
+
+كود المنتج:
+${esc(p.code)}
+
 </div>
 `
+
 :
+
 ''
 }
 
 
 ${
 p.category
+
 ?
+
 `
 <div class="category">
-التصنيف: ${esc(p.category)}
+
+التصنيف:
+${esc(p.category)}
+
 </div>
 `
+
 :
+
 ''
 }
 
 
 <div class="description">
-${esc(p.description || '')}
+
+${esc(
+p.description || ''
+)}
+
 </div>
 
 
@@ -676,8 +816,13 @@ p.price !== ''
 
 `
 <div class="price">
-${Number(p.price).toLocaleString('ar-SA')}
+
+${Number(
+p.price
+).toLocaleString('ar-SA')}
+
 ريال
+
 </div>
 `
 
@@ -688,26 +833,34 @@ ${Number(p.price).toLocaleString('ar-SA')}
 
 
 <span
-class="badge ${p.available?'':'off'}">
+class="badge ${p.available ? '' : 'off'}">
 
-${p.available
+${
+p.available
 ?
 'متوفر'
 :
-'غير متوفر'}
+'غير متوفر'
+}
 
 </span>
+
 
 </div>
 
 </article>
 
-`).join('');
+`;
+
+})
+.join('');
 
 }
 
 
-/* تحميل الإعلانات */
+/* =====================================
+   تحميل الإعلانات
+===================================== */
 
 async function loadAds(){
 
@@ -744,6 +897,7 @@ r
 if(r.error){
 
 console.error(
+'ADS ERROR:',
 r.error
 );
 
@@ -760,20 +914,25 @@ renderAds();
 
 }catch(error){
 
-console.error(error);
+console.error(
+'ADS JAVASCRIPT ERROR:',
+error
+);
 
 }
 
 }
 
 
-/* عرض الإعلانات */
+/* =====================================
+   عرض الإعلانات
+===================================== */
 
 function renderAds(){
 
 if(!ads.length){
 
-adsContainer.innerHTML='';
+adsContainer.innerHTML = '';
 
 return;
 
@@ -781,9 +940,13 @@ return;
 
 
 adsContainer.innerHTML =
-ads.map(ad=>`
+ads
+.map(function(ad){
+
+return `
 
 <div class="ad">
+
 
 ${
 ad.image_url
@@ -805,18 +968,28 @@ alt="${esc(ad.title || '')}">
 
 <div class="ad-content">
 
+
 <h2>
-${esc(ad.title || '')}
+
+${esc(
+ad.title || ''
+)}
+
 </h2>
 
 
 ${
 ad.description
+
 ?
 
 `
 <p>
-${esc(ad.description)}
+
+${esc(
+ad.description
+)}
+
 </p>
 `
 
@@ -828,6 +1001,7 @@ ${esc(ad.description)}
 
 ${
 ad.button_url
+
 ?
 
 `
@@ -849,21 +1023,56 @@ ad.button_text ||
 ''
 }
 
-</div>
 
 </div>
 
-`).join('');
+</div>
+
+`;
+
+})
+.join('');
 
 }
 
 
-search.oninput=render;
+/* =====================================
+   البحث
+===================================== */
 
-category.onchange=render;
+search.oninput =
+function(){
+
+render();
+
+};
 
 
-/* التشغيل */
+/* =====================================
+   التصنيف
+===================================== */
+
+category.onchange =
+function(){
+
+render();
+
+};
+
+
+/* =====================================
+   تشغيل الصفحة
+===================================== */
+
+console.log(
+'INDEX PAGE STARTED'
+);
+
+console.log(
+'SUPABASE URL:',
+SUPABASE_URL
+);
+
 
 loadProducts();
 
