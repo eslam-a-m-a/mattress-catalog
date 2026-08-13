@@ -8,10 +8,7 @@
 <title>شركة بيت المراتب للمفروشات</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
 margin:0;
@@ -22,7 +19,7 @@ color:#1d2939;
 
 header{
 background:linear-gradient(135deg,#0756a8,#1689e5);
-color:white;
+color:#fff;
 padding:25px 18px;
 }
 
@@ -67,7 +64,7 @@ margin-bottom:25px;
 }
 
 .ad{
-background:white;
+background:#fff;
 border-radius:18px;
 overflow:hidden;
 box-shadow:0 4px 18px #0001;
@@ -103,7 +100,7 @@ line-height:1.7;
 display:inline-block;
 width:max-content;
 background:#0756a8;
-color:white;
+color:#fff;
 text-decoration:none;
 padding:12px 20px;
 border-radius:9px;
@@ -113,7 +110,7 @@ font-weight:bold;
 /* البحث */
 
 .controls{
-background:white;
+background:#fff;
 padding:15px;
 border-radius:14px;
 box-shadow:0 2px 10px #0001;
@@ -143,7 +140,7 @@ gap:18px;
 }
 
 .card{
-background:white;
+background:#fff;
 border-radius:15px;
 overflow:hidden;
 box-shadow:0 3px 12px #0001;
@@ -214,7 +211,7 @@ color:#777;
 }
 
 .empty{
-background:white;
+background:#fff;
 padding:40px;
 text-align:center;
 border-radius:15px;
@@ -224,7 +221,7 @@ color:#667085;
 footer{
 margin-top:40px;
 background:#073b73;
-color:white;
+color:#fff;
 padding:25px 20px;
 text-align:center;
 }
@@ -234,7 +231,7 @@ margin:7px;
 }
 
 .footer-whatsapp{
-color:white;
+color:#fff;
 font-weight:bold;
 }
 
@@ -306,7 +303,6 @@ height:220px;
 }
 
 }
-
 </style>
 
 </head>
@@ -341,16 +337,12 @@ target="_blank">
 
 <main>
 
-<!-- الإعلانات -->
-
 <section class="ads">
 
 <div id="adsContainer"></div>
 
 </section>
 
-
-<!-- البحث والتصنيف -->
 
 <div class="controls">
 
@@ -407,11 +399,16 @@ target="_blank">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="config.js"></script>
-
 <script>
 
-/* الاتصال بقاعدة البيانات */
+/* اتصال Supabase مباشرة */
+
+const SUPABASE_URL =
+"https://wmiszhoahvfsbmedjrbm.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_fFclLm6Z2fdUTYxD_AAC5w_icPdd_n5";
+
 
 const db =
 supabase.createClient(
@@ -420,8 +417,8 @@ SUPABASE_PUBLISHABLE_KEY
 );
 
 
-let products = [];
-let ads = [];
+let products=[];
+let ads=[];
 
 
 const grid =
@@ -469,6 +466,8 @@ status.textContent =
 'جاري تحميل المنتجات...';
 
 
+try{
+
 const r =
 await db
 .from('products')
@@ -488,7 +487,7 @@ ascending:true
 
 
 console.log(
-'PRODUCTS:',
+'PRODUCT RESULT:',
 r
 );
 
@@ -496,12 +495,8 @@ r
 if(r.error){
 
 status.textContent =
-'تعذر تحميل المنتجات: ' +
+'خطأ في تحميل المنتجات: ' +
 r.error.message;
-
-console.error(
-r.error
-);
 
 return;
 
@@ -543,6 +538,16 @@ ${esc(c)}
 
 render();
 
+
+}catch(error){
+
+console.error(error);
+
+status.textContent =
+'حدث خطأ أثناء تحميل المنتجات';
+
+}
+
 }
 
 
@@ -576,7 +581,7 @@ p.category
 return
 (!q || text.includes(q))
 &&
-(!c || p.category === c);
+(!c || p.category===c);
 
 });
 
@@ -588,12 +593,9 @@ result.length;
 
 if(!result.length){
 
-grid.innerHTML =
-`
+grid.innerHTML = `
 <div class="empty">
-
 لا توجد منتجات مطابقة للبحث
-
 </div>
 `;
 
@@ -603,11 +605,9 @@ return;
 
 
 grid.innerHTML =
-result
-.map(p=>`
+result.map(p=>`
 
 <article class="card">
-
 
 ${
 p.image_url
@@ -629,7 +629,6 @@ alt="${esc(p.name)}">
 `
 }
 
-
 <div class="info">
 
 <h3>
@@ -639,36 +638,26 @@ ${esc(p.name)}
 
 ${
 p.code
-
 ?
-
 `
 <div class="category">
-كود المنتج:
-${esc(p.code)}
+كود المنتج: ${esc(p.code)}
 </div>
 `
-
 :
-
 ''
 }
 
 
 ${
 p.category
-
 ?
-
 `
 <div class="category">
-التصنيف:
-${esc(p.category)}
+التصنيف: ${esc(p.category)}
 </div>
 `
-
 :
-
 ''
 }
 
@@ -687,11 +676,8 @@ p.price !== ''
 
 `
 <div class="price">
-
 ${Number(p.price).toLocaleString('ar-SA')}
-
 ريال
-
 </div>
 `
 
@@ -712,13 +698,11 @@ ${p.available
 
 </span>
 
-
 </div>
 
 </article>
 
-`)
-.join('');
+`).join('');
 
 }
 
@@ -726,6 +710,8 @@ ${p.available
 /* تحميل الإعلانات */
 
 async function loadAds(){
+
+try{
 
 const r =
 await db
@@ -750,7 +736,7 @@ ascending:false
 
 
 console.log(
-'ADS:',
+'ADS RESULT:',
 r
 );
 
@@ -758,11 +744,8 @@ r
 if(r.error){
 
 console.error(
-'ADS ERROR:',
 r.error
 );
-
-adsContainer.innerHTML = '';
 
 return;
 
@@ -772,8 +755,14 @@ return;
 ads =
 r.data || [];
 
-
 renderAds();
+
+
+}catch(error){
+
+console.error(error);
+
+}
 
 }
 
@@ -784,7 +773,7 @@ function renderAds(){
 
 if(!ads.length){
 
-adsContainer.innerHTML = '';
+adsContainer.innerHTML='';
 
 return;
 
@@ -792,11 +781,9 @@ return;
 
 
 adsContainer.innerHTML =
-ads
-.map(ad=>`
+ads.map(ad=>`
 
 <div class="ad">
-
 
 ${
 ad.image_url
@@ -819,26 +806,17 @@ alt="${esc(ad.title || '')}">
 <div class="ad-content">
 
 <h2>
-
-${esc(
-ad.title || ''
-)}
-
+${esc(ad.title || '')}
 </h2>
 
 
 ${
 ad.description
-
 ?
 
 `
 <p>
-
-${esc(
-ad.description
-)}
-
+${esc(ad.description)}
 </p>
 `
 
@@ -850,7 +828,6 @@ ad.description
 
 ${
 ad.button_url
-
 ?
 
 `
@@ -872,30 +849,21 @@ ad.button_text ||
 ''
 }
 
-
 </div>
 
 </div>
 
-`)
-.join('');
+`).join('');
 
 }
 
 
-/* البحث */
+search.oninput=render;
 
-search.oninput =
-render;
-
-
-/* التصنيف */
-
-category.onchange =
-render;
+category.onchange=render;
 
 
-/* تشغيل */
+/* التشغيل */
 
 loadProducts();
 
