@@ -18,7 +18,7 @@ background:#f7f8fa;
 color:#10233f;
 }
 /* =========================
-   HEADER
+HEADER
 ========================= */
 header{
 background:#06254d;
@@ -77,7 +77,7 @@ color:white;
 text-decoration:none;
 }
 /* =========================
-   MAIN
+MAIN
 ========================= */
 main{
 width:100%;
@@ -86,7 +86,7 @@ margin:auto;
 padding:10px 30px 30px;
 }
 /* =========================
-   HERO
+HERO
 ========================= */
 .hero{
 height:190px;
@@ -94,7 +94,6 @@ background:#fff;
 border-radius:15px;
 overflow:hidden;
 margin-bottom:22px;
-position:relative;
 display:flex;
 align-items:center;
 box-shadow:0 2px 12px #0000000b;
@@ -102,7 +101,9 @@ box-shadow:0 2px 12px #0000000b;
 .hero-image{
 width:45%;
 height:100%;
-background-image:url("najma-logo.png.png");
+background-image:url(
+"https://raw.githubusercontent.com/eslam-a-m-a/mattress-catalog/main/najma-logo.png.png"
+);
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
@@ -125,7 +126,7 @@ line-height:1.8;
 color:#344054;
 }
 /* =========================
-   CATALOG
+CATALOG
 ========================= */
 .catalog-layout{
 display:grid;
@@ -138,7 +139,7 @@ direction:ltr;
 direction:rtl;
 }
 /* =========================
-   SIDEBAR
+SIDEBAR
 ========================= */
 .sidebar{
 background:#fff;
@@ -207,7 +208,7 @@ font-weight:bold;
 font-size:14px;
 }
 /* =========================
-   TOOLBAR
+TOOLBAR
 ========================= */
 .toolbar{
 display:grid;
@@ -264,7 +265,7 @@ cursor:pointer;
 font-size:14px;
 }
 /* =========================
-   PRODUCTS
+PRODUCTS
 ========================= */
 .status{
 font-size:13px;
@@ -283,6 +284,7 @@ border-radius:12px;
 overflow:hidden;
 position:relative;
 transition:.2s;
+cursor:pointer;
 }
 .card:hover{
 transform:translateY(-3px);
@@ -356,7 +358,7 @@ color:#06254d;
 font-size:13px;
 }
 /* =========================
-   SERVICES
+SERVICES
 ========================= */
 .services{
 margin-top:28px;
@@ -388,7 +390,7 @@ font-size:12px;
 color:#667085;
 }
 /* =========================
-   FOOTER
+FOOTER
 ========================= */
 footer{
 background:#06254d;
@@ -396,13 +398,12 @@ color:#fff;
 text-align:center;
 padding:17px;
 font-size:14px;
-margin-top:0;
 }
 footer p{
 margin:0;
 }
 /* =========================
-   LARGE SCREENS
+COMPUTER
 ========================= */
 @media(min-width:1500px){
 .grid{
@@ -414,7 +415,7 @@ height:170px;
 }
 }
 /* =========================
-   TABLET
+TABLET
 ========================= */
 @media(max-width:1200px){
 .header{
@@ -429,8 +430,11 @@ grid-template-columns:repeat(4,minmax(0,1fr));
 }
 }
 /* =========================
-   TABLET / MOBILE
+MOBILE
 ========================= */
+.mobile-category-toggle{
+display:none;
+}
 @media(max-width:800px){
 header{
 height:auto;
@@ -441,84 +445,74 @@ padding:15px;
 flex-wrap:wrap;
 justify-content:center;
 }
+.logo{
+font-size:20px;
+}
 .nav{
 order:3;
 width:100%;
 justify-content:center;
 height:40px;
+gap:18px;
 }
 .nav a{
 padding:8px 0;
-}
-.contact{
-font-size:12px;
-}
-.catalog-layout{
-grid-template-columns:1fr;
-}
-.sidebar{
-order:2;
-position:static;
-}
-.products-area{
-order:1;
-}
-.grid{
-grid-template-columns:repeat(2,1fr);
-}
-.hero{
-height:auto;
-display:block;
-}
-.hero-image{
-width:100%;
-height:190px;
-}
-.hero-content{
-padding:20px;
-text-align:center;
-}
-.hero-content h1{
-font-size:26px;
-}
-.toolbar{
-grid-template-columns:1fr;
-}
-.services{
-grid-template-columns:repeat(2,1fr);
-}
-.service{
-border-left:0;
-}
-}
-/* =========================
-   PHONE
-========================= */
-@media(max-width:480px){
-main{
-padding:8px 10px 20px;
-}
-.logo{
-font-size:20px;
+font-size:13px;
 }
 .contact{
 display:none;
 }
-.nav{
-gap:18px;
+main{
+padding:8px 10px 20px;
 }
-.nav a{
-font-size:13px;
+.catalog-layout{
+grid-template-columns:1fr;
+}
+.products-area{
+order:1;
+}
+.sidebar{
+order:2;
+position:static;
+display:none;
+}
+.sidebar.mobile-open{
+display:block;
+animation:slideDown .2s ease;
+}
+.mobile-category-toggle{
+display:flex;
+align-items:center;
+justify-content:space-between;
+width:100%;
+height:48px;
+border:0;
+border-radius:10px;
+background:#06254d;
+color:#fff;
+font-family:inherit;
+font-size:15px;
+font-weight:bold;
+padding:0 15px;
+cursor:pointer;
+margin-bottom:10px;
+}
+.mobile-category-toggle span:last-child{
+font-size:22px;
 }
 .hero{
+height:auto;
+display:block;
 margin-bottom:15px;
 border-radius:12px;
 }
 .hero-image{
+width:100%;
 height:155px;
 }
 .hero-content{
 padding:15px 12px;
+text-align:center;
 }
 .hero-content h1{
 font-size:22px;
@@ -527,6 +521,10 @@ margin-bottom:7px;
 .hero-content p{
 font-size:13px;
 line-height:1.6;
+}
+.toolbar{
+grid-template-columns:1fr;
+gap:8px;
 }
 .grid{
 grid-template-columns:1fr 1fr;
@@ -554,13 +552,13 @@ font-size:16px;
 .price span{
 font-size:11px;
 }
-.sidebar{
-padding:13px;
-}
 .services{
 grid-template-columns:1fr 1fr;
 padding:12px 5px;
 gap:10px;
+}
+.service{
+border-left:0;
 }
 .service h3{
 font-size:13px;
@@ -570,14 +568,14 @@ font-size:10px;
 }
 }
 /* =========================
-   VERY SMALL PHONE
+SMALL PHONE
 ========================= */
 @media(max-width:360px){
 .grid{
-grid-template-columns:1fr;
+grid-template-columns:1fr 1fr;
 }
 .image-wrap{
-height:190px;
+height:125px;
 }
 .nav{
 gap:12px;
@@ -587,40 +585,8 @@ font-size:12px;
 }
 }
 /* =========================
-   MOBILE CATEGORY MENU
+ANIMATION
 ========================= */
-.mobile-category-toggle{
-display:none;
-}
-@media(max-width:800px){
-.mobile-category-toggle{
-display:flex;
-align-items:center;
-justify-content:space-between;
-width:100%;
-height:48px;
-border:0;
-border-radius:10px;
-background:#06254d;
-color:#fff;
-font-family:inherit;
-font-size:15px;
-font-weight:bold;
-padding:0 15px;
-cursor:pointer;
-margin-bottom:10px;
-}
-.mobile-category-toggle span{
-font-size:22px;
-line-height:1;
-}
-.sidebar{
-display:none;
-}
-.sidebar.mobile-open{
-display:block;
-animation:slideDown .2s ease;
-}
 @keyframes slideDown{
 from{
 opacity:0;
@@ -629,7 +595,6 @@ transform:translateY(-8px);
 to{
 opacity:1;
 transform:translateY(0);
-}
 }
 }
 </style>
@@ -642,14 +607,26 @@ transform:translateY(0);
 <small>راحة تدوم</small>
 </div>
 <nav class="nav">
-<a href="#" class="active">الرئيسية</a>
-<a href="#products">المنتجات</a>
-<a href="#">من نحن</a>
-<a href="#contact">تواصل معنا</a>
+<a href="#" class="active">
+الرئيسية
+</a>
+<a href="#products">
+المنتجات
+</a>
+<a href="#">
+من نحن
+</a>
+<a href="#contact">
+تواصل معنا
+</a>
 </nav>
 <div class="contact">
-<a href="tel:920012345">☎ 9200 12345</a>
-<a href="https://wa.me/966546510165" target="_blank">
+<a href="tel:920012345">
+☎ 9200 12345
+</a>
+<a
+href="https://wa.me/966546510165"
+target="_blank">
 ◉ تواصل واتساب
 </a>
 </div>
@@ -657,9 +634,14 @@ transform:translateY(0);
 </header>
 <main>
 <section class="hero">
-<div class="hero-image" id="heroImage"></div>
+<div
+class="hero-image"
+id="heroImage">
+</div>
 <div class="hero-content">
-<h1>كتالوج منتجاتنا</h1>
+<h1>
+كتالوج منتجاتنا
+</h1>
 <p>
 تصفح مجموعة متنوعة من المراتب والبطاطين والسجاد
 <br>
@@ -670,12 +652,22 @@ transform:translateY(0);
 <button
 id="mobileCategoryToggle"
 class="mobile-category-toggle">
-<span>التصنيفات</span>
-<span>☰</span>
+<span>
+التصنيفات
+</span>
+<span>
+☰
+</span>
 </button>
-<div class="catalog-layout" id="products">
-<aside class="sidebar" id="sidebar">
-<h2>التصنيفات</h2>
+<div
+class="catalog-layout"
+id="products">
+<aside
+class="sidebar"
+id="sidebar">
+<h2>
+التصنيفات
+</h2>
 <div
 class="category-list"
 id="categoryList">
@@ -683,11 +675,15 @@ id="categoryList">
 class="category-btn active"
 data-category="">
 كل المنتجات
-<span>⌂</span>
+<span>
+⌂
+</span>
 </button>
 </div>
 <div class="help-box">
-<h3>تحتاج مساعدة؟</h3>
+<h3>
+تحتاج مساعدة؟
+</h3>
 <p>
 فريقنا جاهز لخدمتك
 </p>
@@ -752,24 +748,48 @@ class="grid">
 </div>
 <section class="services">
 <div class="service">
-<div class="service-icon">🏷</div>
-<h3>أسعار تنافسية</h3>
-<p>أفضل الأسعار في السوق</p>
+<div class="service-icon">
+🏷
+</div>
+<h3>
+أسعار تنافسية
+</h3>
+<p>
+أفضل الأسعار في السوق
+</p>
 </div>
 <div class="service">
-<div class="service-icon">🏅</div>
-<h3>جودة عالية</h3>
-<p>منتجات مختارة بعناية</p>
+<div class="service-icon">
+🏅
+</div>
+<h3>
+جودة عالية
+</h3>
+<p>
+منتجات مختارة بعناية
+</p>
 </div>
 <div class="service">
-<div class="service-icon">🚚</div>
-<h3>شحن سريع</h3>
-<p>إلى جميع مناطق المملكة</p>
+<div class="service-icon">
+🚚
+</div>
+<h3>
+شحن سريع
+</h3>
+<p>
+إلى جميع مناطق المملكة
+</p>
 </div>
 <div class="service">
-<div class="service-icon">♧</div>
-<h3>خدمة عملاء مميزة</h3>
-<p>نحن هنا لخدمتك</p>
+<div class="service-icon">
+♧
+</div>
+<h3>
+خدمة عملاء مميزة
+</h3>
+<p>
+نحن هنا لخدمتك
+</p>
 </div>
 </section>
 </main>
@@ -781,7 +801,7 @@ class="grid">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ==============================
-   SUPABASE
+SUPABASE
 ============================== */
 const SUPABASE_URL =
 "https://wmiszhoahvfsbmedjrbm.supabase.co";
@@ -793,7 +813,7 @@ SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 /* ==============================
-   VARIABLES
+VARIABLES
 ============================== */
 let products = [];
 let selectedCategory = "";
@@ -821,7 +841,7 @@ document.getElementById(
 "mobileCategoryToggle"
 );
 /* ==============================
-   حماية النصوص
+حماية النصوص
 ============================== */
 function esc(value){
 return String(value ?? "")
@@ -839,7 +859,7 @@ return {
 );
 }
 /* ==============================
-   تحميل المنتجات
+تحميل المنتجات
 ============================== */
 async function loadProducts(){
 status.textContent =
@@ -865,22 +885,15 @@ return;
 }
 products =
 result.data || [];
-/* صورة الهيرو */
-if(products.length){
-const firstWithImage =
-products.find(
-p => p.image_url
-);
-if(firstWithImage){
+/* صورة Najma */
 heroImage.style.backgroundImage =
-`url("${esc(firstWithImage.image_url)}")`;
-}
-}
+'url("https://raw.githubusercontent.com/eslam-a-m-a/mattress-catalog/main/najma-logo.png.png")';
 /* التصنيفات */
 buildCategories();
-/* العرض */
+/* المنتجات */
 renderProducts();
-}catch(error){
+}
+catch(error){
 console.error(error);
 status.textContent =
 "حدث خطأ أثناء تحميل المنتجات";
@@ -892,7 +905,7 @@ esc(error.message);
 }
 }
 /* ==============================
-   التصنيفات
+التصنيفات
 ============================== */
 function buildCategories(){
 categoryList.innerHTML = "";
@@ -942,7 +955,7 @@ categoryList.appendChild(button);
 });
 }
 /* ==============================
-   عرض المنتجات
+عرض المنتجات
 ============================== */
 function renderProducts(){
 let result =
@@ -1018,7 +1031,11 @@ grid.innerHTML =
 result
 .map(function(p){
 return `
-<article class="card">
+<article
+class="card"
+onclick="openProduct('${encodeURIComponent(
+p.code || p.id
+)}')">
 <div class="image-wrap">
 ${
 p.image_url
@@ -1036,7 +1053,8 @@ alt="${esc(p.name)}">
 </div>
 `
 }
-<span class="badge ${
+<span
+class="badge ${
 p.available
 ?
 "available"
@@ -1060,7 +1078,9 @@ ${esc(p.code || "")}
 ${esc(p.name || "")}
 </h3>
 <div class="description">
-${esc(p.description || "")}
+${esc(
+p.description || ""
+)}
 </div>
 ${
 p.price !== null &&
@@ -1087,7 +1107,15 @@ p.price
 .join("");
 }
 /* ==============================
-   البحث
+فتح صفحة المنتج
+============================== */
+function openProduct(value){
+window.location.href =
+"product.html?code=" +
+value;
+}
+/* ==============================
+البحث
 ============================== */
 function doSearch(){
 currentSearch =
@@ -1111,12 +1139,12 @@ search.value.trim();
 renderProducts();
 });
 /* ==============================
-   الترتيب
+الترتيب
 ============================== */
 sort.onchange =
 renderProducts;
 /* ==============================
-   التصنيفات
+التصنيفات
 ============================== */
 categoryList.addEventListener(
 "click",
@@ -1130,7 +1158,6 @@ selectedCategory =
 button.dataset.category || "";
 buildCategories();
 renderProducts();
-/* إغلاق القائمة على الهاتف */
 if(window.innerWidth <= 800){
 sidebar.classList.remove(
 "mobile-open"
@@ -1138,7 +1165,7 @@ sidebar.classList.remove(
 }
 });
 /* ==============================
-   كل المنتجات
+كل المنتجات
 ============================== */
 document
 .getElementById("allProducts")
@@ -1158,7 +1185,7 @@ behavior:"smooth"
 });
 };
 /* ==============================
-   قائمة التصنيفات للهاتف
+قائمة الهاتف
 ============================== */
 mobileCategoryToggle.onclick =
 function(){
@@ -1167,7 +1194,7 @@ sidebar.classList.toggle(
 );
 };
 /* ==============================
-   التشغيل
+تشغيل
 ============================== */
 loadProducts();
 </script>
