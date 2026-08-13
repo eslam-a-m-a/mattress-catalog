@@ -110,6 +110,8 @@ border-radius:9px;
 font-weight:bold;
 }
 
+/* البحث */
+
 .controls{
 background:white;
 padding:15px;
@@ -306,6 +308,7 @@ height:220px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -408,15 +411,18 @@ target="_blank">
 
 <script>
 
+/* الاتصال بقاعدة البيانات */
+
 const db =
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
-let products = [];
 
+let products = [];
 let ads = [];
+
 
 const grid =
 document.getElementById('grid');
@@ -433,6 +439,8 @@ document.getElementById('category');
 const adsContainer =
 document.getElementById('adsContainer');
 
+
+/* حماية النصوص */
 
 function esc(v){
 
@@ -457,12 +465,33 @@ m=>({
 
 async function loadProducts(){
 
+status.textContent =
+'جاري تحميل المنتجات...';
+
+
 const r =
 await db
 .from('products')
 .select('*')
-.order('sort_order')
-.order('name');
+.order(
+'sort_order',
+{
+ascending:true
+}
+)
+.order(
+'name',
+{
+ascending:true
+}
+);
+
+
+console.log(
+'PRODUCTS:',
+r
+);
+
 
 if(r.error){
 
@@ -470,15 +499,24 @@ status.textContent =
 'تعذر تحميل المنتجات: ' +
 r.error.message;
 
+console.error(
+r.error
+);
+
 return;
 
 }
 
+
 products =
 r.data || [];
 
+
+/* التصنيفات */
+
 category.innerHTML =
 '<option value="">كل التصنيفات</option>';
+
 
 [
 ...new Set(
@@ -491,14 +529,17 @@ products
 
 category.insertAdjacentHTML(
 'beforeend',
+
 `
 <option value="${esc(c)}">
 ${esc(c)}
 </option>
 `
+
 );
 
 });
+
 
 render();
 
@@ -517,6 +558,7 @@ search.value
 const c =
 category.value;
 
+
 const result =
 products.filter(p=>{
 
@@ -530,6 +572,7 @@ p.category
 .join(' ')
 .toLowerCase();
 
+
 return
 (!q || text.includes(q))
 &&
@@ -537,16 +580,20 @@ return
 
 });
 
+
 status.textContent =
 'عدد المنتجات: ' +
 result.length;
+
 
 if(!result.length){
 
 grid.innerHTML =
 `
 <div class="empty">
+
 لا توجد منتجات مطابقة للبحث
+
 </div>
 `;
 
@@ -554,10 +601,13 @@ return;
 
 }
 
+
 grid.innerHTML =
-result.map(p=>`
+result
+.map(p=>`
 
 <article class="card">
+
 
 ${
 p.image_url
@@ -579,21 +629,54 @@ alt="${esc(p.name)}">
 `
 }
 
+
 <div class="info">
 
 <h3>
 ${esc(p.name)}
 </h3>
 
+
+${
+p.code
+
+?
+
+`
 <div class="category">
-${esc(p.category || '')}
+كود المنتج:
+${esc(p.code)}
 </div>
+`
+
+:
+
+''
+}
+
+
+${
+p.category
+
+?
+
+`
+<div class="category">
+التصنيف:
+${esc(p.category)}
+</div>
+`
+
+:
+
+''
+}
+
 
 <div class="description">
 ${esc(p.description || '')}
 </div>
 
-<div class="price">
 
 ${
 p.price !== null &&
@@ -602,28 +685,40 @@ p.price !== ''
 
 ?
 
-Number(p.price).toLocaleString('ar-SA') +
-' ريال'
+`
+<div class="price">
+
+${Number(p.price).toLocaleString('ar-SA')}
+
+ريال
+
+</div>
+`
 
 :
 
 ''
 }
 
-</div>
 
 <span
 class="badge ${p.available?'':'off'}">
 
-${p.available?'متوفر':'غير متوفر'}
+${p.available
+?
+'متوفر'
+:
+'غير متوفر'}
 
 </span>
+
 
 </div>
 
 </article>
 
-`).join('');
+`)
+.join('');
 
 }
 
@@ -636,23 +731,47 @@ const r =
 await db
 .from('ads')
 .select('*')
-.eq('active',true)
-.order('sort_order')
-.order('id',{ascending:false});
+.eq(
+'active',
+true
+)
+.order(
+'sort_order',
+{
+ascending:true
+}
+)
+.order(
+'id',
+{
+ascending:false
+}
+);
+
+
+console.log(
+'ADS:',
+r
+);
+
 
 if(r.error){
 
 console.error(
-'Ads error:',
+'ADS ERROR:',
 r.error
 );
+
+adsContainer.innerHTML = '';
 
 return;
 
 }
 
+
 ads =
 r.data || [];
+
 
 renderAds();
 
@@ -671,10 +790,13 @@ return;
 
 }
 
+
 adsContainer.innerHTML =
-ads.map(ad=>`
+ads
+.map(ad=>`
 
 <div class="ad">
+
 
 ${
 ad.image_url
@@ -685,7 +807,7 @@ ad.image_url
 <img
 class="ad-image"
 src="${esc(ad.image_url)}"
-alt="${esc(ad.title)}">
+alt="${esc(ad.title || '')}">
 `
 
 :
@@ -693,15 +815,38 @@ alt="${esc(ad.title)}">
 ''
 }
 
+
 <div class="ad-content">
 
 <h2>
-${esc(ad.title || '')}
+
+${esc(
+ad.title || ''
+)}
+
 </h2>
 
+
+${
+ad.description
+
+?
+
+`
 <p>
-${esc(ad.description || '')}
+
+${esc(
+ad.description
+)}
+
 </p>
+`
+
+:
+
+''
+}
+
 
 ${
 ad.button_url
@@ -714,7 +859,10 @@ class="ad-button"
 href="${esc(ad.button_url)}"
 target="_blank">
 
-${esc(ad.button_text || 'اعرف المزيد')}
+${esc(
+ad.button_text ||
+'اعرف المزيد'
+)}
 
 </a>
 `
@@ -724,23 +872,30 @@ ${esc(ad.button_text || 'اعرف المزيد')}
 ''
 }
 
-</div>
 
 </div>
 
-`).join('');
+</div>
+
+`)
+.join('');
 
 }
 
 
+/* البحث */
+
 search.oninput =
 render;
+
+
+/* التصنيف */
 
 category.onchange =
 render;
 
 
-/* التشغيل */
+/* تشغيل */
 
 loadProducts();
 
