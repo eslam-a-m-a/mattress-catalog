@@ -4,12 +4,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>لوحة تحكم شركة بيت المراتب للمفروشات</title>
 
 <style>
+
+*{
+box-sizing:border-box;
+}
+
 body{
 font-family:Arial,Tahoma,sans-serif;
-background:#f4f7fb;
+background:#f4f8fc;
 margin:0;
 color:#222;
 }
@@ -25,7 +31,7 @@ color:#0756a8;
 }
 
 .box{
-background:white;
+background:#fff;
 padding:20px;
 border-radius:14px;
 margin-bottom:18px;
@@ -52,7 +58,7 @@ resize:vertical;
 
 button{
 background:#0756a8;
-color:white;
+color:#fff;
 border:0;
 margin:4px;
 cursor:pointer;
@@ -66,8 +72,29 @@ background:#b00020;
 background:#159447;
 }
 
+.gray{
+background:#666;
+}
+
 .hidden{
 display:none;
+}
+
+.checkbox{
+display:flex;
+align-items:center;
+gap:8px;
+margin:10px 0;
+}
+
+.checkbox input{
+width:auto;
+margin:0;
+}
+
+.msg{
+margin-top:10px;
+font-weight:bold;
 }
 
 .item{
@@ -102,23 +129,8 @@ border-bottom:2px solid #e6edf5;
 padding-bottom:10px;
 }
 
-.checkbox{
-display:flex;
-align-items:center;
-gap:8px;
-margin:10px 0;
-}
-
-.checkbox input{
-width:auto;
-margin:0;
-}
-
-.msg{
-margin-top:10px;
-font-weight:bold;
-}
 </style>
+
 </head>
 
 <body>
@@ -128,6 +140,7 @@ font-weight:bold;
 <h1>
 لوحة تحكم شركة بيت المراتب للمفروشات
 </h1>
+
 
 <!-- تسجيل الدخول -->
 
@@ -149,7 +162,10 @@ placeholder="كلمة المرور">
 دخول
 </button>
 
-<div id="loginMsg"></div>
+<div
+id="loginMsg"
+class="msg">
+</div>
 
 </div>
 
@@ -163,7 +179,9 @@ placeholder="كلمة المرور">
 </button>
 
 
-<!-- المنتجات -->
+<!-- =========================
+     المنتجات
+========================= -->
 
 <div class="box">
 
@@ -175,11 +193,17 @@ placeholder="كلمة المرور">
 إضافة منتج
 </h3>
 
-<input id="code" placeholder="كود المنتج">
+<input
+id="code"
+placeholder="كود المنتج">
 
-<input id="name" placeholder="اسم المنتج">
+<input
+id="name"
+placeholder="اسم المنتج">
 
-<input id="category" placeholder="التصنيف">
+<input
+id="category"
+placeholder="التصنيف">
 
 <input
 id="price"
@@ -218,7 +242,7 @@ accept="image/*">
 
 <button
 id="cancelProduct"
-class="hidden">
+class="gray hidden">
 إلغاء
 </button>
 
@@ -245,7 +269,9 @@ class="msg">
 </div>
 
 
-<!-- الإعلانات -->
+<!-- =========================
+     الإعلانات
+========================= -->
 
 <div class="box">
 
@@ -267,7 +293,7 @@ placeholder="وصف الإعلان"></textarea>
 
 <input
 id="adButtonText"
-placeholder="نص الزر مثال: شاهد العرض">
+placeholder="نص الزر مثال: تواصل معنا">
 
 <input
 id="adButtonUrl"
@@ -276,7 +302,7 @@ placeholder="رابط الزر">
 <input
 id="adSort"
 type="number"
-placeholder="ترتيب الإعلان">
+placeholder="الترتيب">
 
 <label class="checkbox">
 
@@ -302,7 +328,7 @@ class="green">
 
 <button
 id="cancelAd"
-class="hidden">
+class="gray hidden">
 إلغاء
 </button>
 
@@ -337,7 +363,12 @@ class="msg">
 
 <script src="config.js"></script>
 
+
 <script>
+
+/* =========================
+   الاتصال بـ Supabase
+========================= */
 
 const db =
 supabase.createClient(
@@ -345,17 +376,21 @@ SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
+
 let editingProduct = null;
 let editingAd = null;
 
 let products = [];
 let ads = [];
 
+
 const $ =
 id => document.getElementById(id);
 
 
-/* تسجيل الدخول */
+/* =========================
+   تسجيل الدخول
+========================= */
 
 async function init(){
 
@@ -366,8 +401,9 @@ show(!!r.data.session);
 
 if(r.data.session){
 
-loadProducts();
-loadAds();
+await loadProducts();
+
+await loadAds();
 
 }
 
@@ -377,10 +413,16 @@ loadAds();
 function show(on){
 
 $('login')
-.classList.toggle('hidden',on);
+.classList.toggle(
+'hidden',
+on
+);
 
 $('app')
-.classList.toggle('hidden',!on);
+.classList.toggle(
+'hidden',
+!on
+);
 
 }
 
@@ -399,33 +441,48 @@ $('loginMsg').textContent =
 
 try{
 
-const {error} =
+const result =
 await db.auth.signInWithPassword({
+
 email:email,
+
 password:password
+
 });
 
-if(error){
+
+if(result.error){
 
 $('loginMsg').textContent =
-error.message;
+'خطأ: ' +
+result.error.message;
+
+console.error(
+result.error
+);
 
 return;
 
 }
+
 
 $('loginMsg').textContent =
 'تم تسجيل الدخول';
 
 show(true);
 
-loadProducts();
-loadAds();
+await loadProducts();
+
+await loadAds();
+
 
 }catch(e){
 
 $('loginMsg').textContent =
+'خطأ: ' +
 e.message;
+
+console.error(e);
 
 }
 
@@ -442,116 +499,243 @@ show(false);
 };
 
 
-/* رفع الصور */
+/* =========================
+   رفع الصور
+========================= */
 
 async function uploadImage(file){
 
 if(!file){
+
 return null;
+
 }
+
 
 const ext =
-(file.name.split('.').pop() || 'jpg')
+(
+file.name
+.split('.')
+.pop()
+||
+'jpg'
+)
 .toLowerCase();
 
-const path =
-crypto.randomUUID() + '.' + ext;
 
-const r =
+const path =
+crypto.randomUUID()
++
+'.'
++
+ext;
+
+
+const result =
 await db.storage
 .from('product-images')
-.upload(path,file);
+.upload(
+path,
+file,
+{
+upsert:false
+}
+);
 
-if(r.error){
-throw r.error;
+
+if(result.error){
+
+throw result.error;
+
 }
 
-return db.storage
+
+const url =
+db.storage
 .from('product-images')
-.getPublicUrl(path)
-.data.publicUrl;
+.getPublicUrl(path);
+
+
+return url.data.publicUrl;
 
 }
 
 
 /* =========================
-   المنتجات
+   حفظ المنتج
 ========================= */
 
 $('saveProduct').onclick =
 async()=>{
 
+$('productMsg').textContent =
+'جاري حفظ المنتج...';
+
+
 try{
 
 const payload = {
 
-code:$('code').value.trim(),
+code:
+$('code').value.trim(),
 
-name:$('name').value.trim(),
+name:
+$('name').value.trim(),
 
-category:$('category').value.trim(),
+category:
+$('category').value.trim(),
 
-description:$('description').value.trim(),
+description:
+$('description').value.trim(),
 
-price:$('price').value
-? Number($('price').value)
-:null,
+price:
+$('price').value
+?
+Number($('price').value)
+:
+null,
 
-available:$('available').checked,
+available:
+$('available').checked,
 
 sort_order:
-Number($('sort').value || 0)
+Number(
+$('sort').value || 0
+)
 
 };
+
+
+if(!payload.name){
+
+$('productMsg').textContent =
+'اكتب اسم المنتج أولاً';
+
+return;
+
+}
+
 
 const file =
 $('image').files[0];
 
+
 if(file){
+
+$('productMsg').textContent =
+'جاري رفع الصورة...';
 
 payload.image_url =
 await uploadImage(file);
 
 }
 
-let r;
+
+/* تعديل */
 
 if(editingProduct){
 
-r =
+const result =
 await db
 .from('products')
 .update(payload)
-.eq('id',editingProduct);
+.eq(
+'id',
+editingProduct
+)
+.select();
 
-}else{
 
-r =
-await db
-.from('products')
-.insert(payload);
+console.log(
+'UPDATE RESULT:',
+result
+);
 
-}
 
-if(r.error){
+if(result.error){
 
 $('productMsg').textContent =
-r.error.message;
+'خطأ: ' +
+result.error.message;
+
+console.error(
+result.error
+);
 
 return;
 
 }
 
+
 $('productMsg').textContent =
-'تم حفظ المنتج بنجاح';
+'تم تعديل المنتج بنجاح';
+
 
 resetProduct();
 
-loadProducts();
+await loadProducts();
+
+return;
+
+}
+
+
+/* إضافة منتج */
+
+const result =
+await db
+.from('products')
+.insert([payload])
+.select();
+
+
+console.log(
+'INSERT PRODUCT RESULT:',
+result
+);
+
+
+if(result.error){
+
+$('productMsg').textContent =
+'خطأ: ' +
+result.error.message;
+
+console.error(
+result.error
+);
+
+return;
+
+}
+
+
+if(!result.data ||
+result.data.length === 0){
+
+$('productMsg').textContent =
+'لم يتم إنشاء المنتج';
+
+return;
+
+}
+
+
+$('productMsg').textContent =
+'تم حفظ المنتج بنجاح';
+
+
+resetProduct();
+
+await loadProducts();
+
 
 }catch(e){
 
+console.error(e);
+
 $('productMsg').textContent =
+'خطأ: ' +
 e.message;
 
 }
@@ -559,29 +743,67 @@ e.message;
 };
 
 
+/* =========================
+   تحميل المنتجات
+========================= */
+
 async function loadProducts(){
 
-const r =
+const result =
 await db
 .from('products')
 .select('*')
-.order('sort_order')
-.order('name');
+.order(
+'sort_order',
+{
+ascending:true
+}
+)
+.order(
+'name',
+{
+ascending:true
+}
+);
 
-if(r.error){
+
+console.log(
+'LOAD PRODUCTS:',
+result
+);
+
+
+if(result.error){
 
 $('productList').textContent =
-r.error.message;
+result.error.message;
+
+console.error(
+result.error
+);
 
 return;
 
 }
 
+
 products =
-r.data || [];
+result.data || [];
+
+
+if(!products.length){
 
 $('productList').innerHTML =
-products.map(p=>`
+'لا توجد منتجات';
+
+return;
+
+}
+
+
+$('productList').innerHTML =
+products
+.map(p=>`
 
 <div class="item">
 
@@ -590,12 +812,17 @@ products.map(p=>`
 ${
 p.image_url
 ?
+
 `
 <img
 class="item-image"
-src="${esc(p.image_url)}">
+src="${esc(p.image_url)}"
+alt="${esc(p.name)}">
 `
-:''
+
+:
+
+''
 }
 
 <b>
@@ -605,12 +832,33 @@ ${esc(p.name)}
 <br>
 
 <small>
-${esc(p.category || '')}
--
-${p.available?'متوفر':'غير متوفر'}
+
+الكود:
+${esc(p.code || '-')}
+
+<br>
+
+التصنيف:
+${esc(p.category || '-')}
+
+<br>
+
+السعر:
+${p.price ?? '-'} ريال
+
+<br>
+
+الحالة:
+${p.available
+?
+'متوفر'
+:
+'غير متوفر'}
+
 </small>
 
 </div>
+
 
 <div class="item-actions">
 
@@ -629,26 +877,39 @@ onclick="deleteProduct(${p.id})">
 
 </div>
 
-`).join('')
-|| 'لا توجد منتجات';
+`)
+.join('');
 
 }
 
+
+/* =========================
+   تعديل المنتج
+========================= */
 
 window.editProduct =
 id=>{
 
 const p =
-products.find(x=>x.id == id);
+products.find(
+x=>x.id == id
+);
+
 
 if(!p){
+
 return;
+
 }
 
-editingProduct = id;
+
+editingProduct =
+id;
+
 
 $('productTitle').textContent =
 'تعديل المنتج';
+
 
 $('code').value =
 p.code || '';
@@ -671,65 +932,99 @@ $('available').checked =
 $('sort').value =
 p.sort_order || 0;
 
+
 $('cancelProduct')
-.classList.remove('hidden');
+.classList.remove(
+'hidden'
+);
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
 
 };
 
 
+/* =========================
+   حذف المنتج
+========================= */
+
 window.deleteProduct =
 async id=>{
 
-if(!confirm('هل تريد حذف المنتج؟')){
+if(
+!confirm(
+'هل تريد حذف المنتج؟'
+)
+){
+
 return;
+
 }
 
-const r =
+
+const result =
 await db
 .from('products')
 .delete()
 .eq('id',id);
 
-if(r.error){
 
-alert(r.error.message);
+if(result.error){
+
+alert(
+result.error.message
+);
 
 return;
 
 }
 
-loadProducts();
+
+await loadProducts();
 
 };
 
 
+/* =========================
+   إعادة نموذج المنتج
+========================= */
+
 function resetProduct(){
 
-editingProduct = null;
+editingProduct =
+null;
+
 
 $('productTitle').textContent =
 'إضافة منتج';
 
-[
-'code',
-'name',
-'category',
-'price',
-'description',
-'sort'
-]
-.forEach(id=>{
-$(id).value = '';
-});
 
-$('available').checked = true;
+$('code').value = '';
+
+$('name').value = '';
+
+$('category').value = '';
+
+$('price').value = '';
+
+$('description').value = '';
+
+$('sort').value = '';
+
+$('available').checked =
+true;
 
 $('image').value = '';
 
-$('cancelProduct')
-.classList.add('hidden');
 
-};
+$('cancelProduct')
+.classList.add(
+'hidden'
+);
+
+}
 
 
 $('cancelProduct').onclick =
@@ -737,11 +1032,15 @@ resetProduct;
 
 
 /* =========================
-   الإعلانات
+   حفظ الإعلان
 ========================= */
 
 $('saveAd').onclick =
 async()=>{
+
+$('adMsg').textContent =
+'جاري حفظ الإعلان...';
+
 
 try{
 
@@ -755,7 +1054,8 @@ $('adDescription').value.trim(),
 
 button_text:
 $('adButtonText').value.trim()
-|| 'اعرف المزيد',
+||
+'اعرف المزيد',
 
 button_url:
 $('adButtonUrl').value.trim(),
@@ -764,58 +1064,116 @@ active:
 $('adActive').checked,
 
 sort_order:
-Number($('adSort').value || 0)
+Number(
+$('adSort').value || 0
+)
 
 };
+
+
+if(!payload.title){
+
+$('adMsg').textContent =
+'اكتب عنوان الإعلان أولاً';
+
+return;
+
+}
+
 
 const file =
 $('adImage').files[0];
 
+
 if(file){
+
+$('adMsg').textContent =
+'جاري رفع صورة الإعلان...';
 
 payload.image_url =
 await uploadImage(file);
 
 }
 
-let r;
+
+let result;
+
+
+/* تعديل إعلان */
 
 if(editingAd){
 
-r =
+result =
 await db
 .from('ads')
 .update(payload)
-.eq('id',editingAd);
+.eq(
+'id',
+editingAd
+)
+.select();
+
 
 }else{
 
-r =
+/* إضافة إعلان */
+
+result =
 await db
 .from('ads')
-.insert(payload);
+.insert([payload])
+.select();
 
 }
 
-if(r.error){
+
+console.log(
+'AD RESULT:',
+result
+);
+
+
+if(result.error){
 
 $('adMsg').textContent =
-r.error.message;
+'خطأ: ' +
+result.error.message;
+
+console.error(
+result.error
+);
 
 return;
 
 }
 
+
+if(!result.data ||
+result.data.length === 0){
+
+$('adMsg').textContent =
+'لم يتم حفظ الإعلان';
+
+return;
+
+}
+
+
 $('adMsg').textContent =
 'تم حفظ الإعلان بنجاح';
 
+
 resetAd();
 
-loadAds();
+await loadAds();
+
 
 }catch(e){
 
+console.error(e);
+
 $('adMsg').textContent =
+'خطأ: ' +
 e.message;
 
 }
@@ -823,29 +1181,67 @@ e.message;
 };
 
 
+/* =========================
+   تحميل الإعلانات
+========================= */
+
 async function loadAds(){
 
-const r =
+const result =
 await db
 .from('ads')
 .select('*')
-.order('sort_order')
-.order('id',{ascending:false});
+.order(
+'sort_order',
+{
+ascending:true
+}
+)
+.order(
+'id',
+{
+ascending:false
+}
+);
 
-if(r.error){
+
+console.log(
+'LOAD ADS:',
+result
+);
+
+
+if(result.error){
 
 $('adList').textContent =
-r.error.message;
+result.error.message;
+
+console.error(
+result.error
+);
 
 return;
 
 }
 
+
 ads =
-r.data || [];
+result.data || [];
+
+
+if(!ads.length){
 
 $('adList').innerHTML =
-ads.map(ad=>`
+'لا توجد إعلانات';
+
+return;
+
+}
+
+
+$('adList').innerHTML =
+ads
+.map(ad=>`
 
 <div class="item">
 
@@ -854,12 +1250,17 @@ ads.map(ad=>`
 ${
 ad.image_url
 ?
+
 `
 <img
 class="item-image"
-src="${esc(ad.image_url)}">
+src="${esc(ad.image_url)}"
+alt="${esc(ad.title)}">
 `
-:''
+
+:
+
+''
 }
 
 <b>
@@ -869,10 +1270,23 @@ ${esc(ad.title)}
 <br>
 
 <small>
-${ad.active?'فعال':'متوقف'}
+
+الحالة:
+${ad.active
+?
+'فعال'
+:
+'متوقف'}
+
+<br>
+
+الترتيب:
+${ad.sort_order || 0}
+
 </small>
 
 </div>
+
 
 <div class="item-actions">
 
@@ -891,26 +1305,39 @@ onclick="deleteAd(${ad.id})">
 
 </div>
 
-`).join('')
-|| 'لا توجد إعلانات';
+`)
+.join('');
 
 }
 
+
+/* =========================
+   تعديل الإعلان
+========================= */
 
 window.editAd =
 id=>{
 
 const ad =
-ads.find(x=>x.id == id);
+ads.find(
+x=>x.id == id
+);
+
 
 if(!ad){
+
 return;
+
 }
 
-editingAd = id;
+
+editingAd =
+id;
+
 
 $('adTitle').textContent =
 'تعديل الإعلان';
+
 
 $('adName').value =
 ad.title || '';
@@ -930,75 +1357,107 @@ ad.sort_order || 0;
 $('adActive').checked =
 !!ad.active;
 
+
 $('cancelAd')
-.classList.remove('hidden');
+.classList.remove(
+'hidden'
+);
 
 };
 
 
+/* =========================
+   حذف الإعلان
+========================= */
+
 window.deleteAd =
 async id=>{
 
-if(!confirm('هل تريد حذف الإعلان؟')){
+if(
+!confirm(
+'هل تريد حذف الإعلان؟'
+)
+){
+
 return;
+
 }
 
-const r =
+
+const result =
 await db
 .from('ads')
 .delete()
 .eq('id',id);
 
-if(r.error){
 
-alert(r.error.message);
+if(result.error){
+
+alert(
+result.error.message
+);
 
 return;
 
 }
 
-loadAds();
+
+await loadAds();
 
 };
 
 
+/* =========================
+   إعادة نموذج الإعلان
+========================= */
+
 function resetAd(){
 
-editingAd = null;
+editingAd =
+null;
+
 
 $('adTitle').textContent =
 'إضافة إعلان';
 
-[
-'adName',
-'adDescription',
-'adButtonText',
-'adButtonUrl',
-'adSort'
-]
-.forEach(id=>{
-$(id).value = '';
-});
 
-$('adActive').checked = true;
+$('adName').value = '';
+
+$('adDescription').value = '';
+
+$('adButtonText').value = '';
+
+$('adButtonUrl').value = '';
+
+$('adSort').value = '';
+
+$('adActive').checked =
+true;
 
 $('adImage').value = '';
 
-$('cancelAd')
-.classList.add('hidden');
 
-};
+$('cancelAd')
+.classList.add(
+'hidden'
+);
+
+}
 
 
 $('cancelAd').onclick =
 resetAd;
 
 
-/* حماية النصوص */
+/* =========================
+   حماية النصوص
+========================= */
 
 function esc(v){
 
-return String(v ?? '')
+return String(
+v ?? ''
+)
 .replace(
 /[&<>"']/g,
 m=>({
@@ -1015,11 +1474,22 @@ m=>({
 }
 
 
-/* متابعة تسجيل الدخول */
+/* =========================
+   متابعة تسجيل الدخول
+========================= */
 
 db.auth.onAuthStateChange(
-(_e,s)=>show(!!s)
+(_event,session)=>{
+
+show(
+!!session
 );
+
+}
+);
+
+
+/* تشغيل الصفحة */
 
 init();
 
