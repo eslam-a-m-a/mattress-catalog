@@ -5,120 +5,119 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>شركة بيت المراتب للمفروشات | الكتالوج</title>
+<title>شركة بيت المراتب للمفروشات</title>
 
 <style>
 
-*{box-sizing:border-box}
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
 font-family:Arial,Tahoma,sans-serif;
-background:#f5f6f8;
-color:#222
+background:#f4f8fc;
+color:#1d2939;
 }
 
 header{
-background:linear-gradient(135deg,#111,#292929);
-color:#fff;
-padding:22px 16px;
-position:sticky;
-top:0;
-z-index:20;
-box-shadow:0 2px 12px #0003
+background:linear-gradient(135deg,#0756a8,#1689e5);
+color:white;
+padding:25px 18px;
 }
 
 .header-inner{
 max-width:1200px;
 margin:auto;
 display:flex;
-align-items:center;
 justify-content:space-between;
-gap:15px
-}
-
-.brand{
-display:flex;
 align-items:center;
-gap:12px
+gap:20px;
 }
 
-.logo{
-width:52px;
-height:52px;
-border-radius:12px;
-background:#fff;
-color:#111;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:bold;
-font-size:18px
-}
-
-.brand h1{
+.logo h1{
 margin:0;
-font-size:22px
+font-size:28px;
 }
 
-.brand p{
-margin:4px 0 0;
-color:#ddd;
-font-size:13px
+.logo p{
+margin:7px 0 0;
+opacity:.9;
 }
 
-.header-buttons{
-display:flex;
-gap:8px
-}
-
-.header-buttons a{
+.whatsapp{
+background:#fff;
+color:#0756a8;
 text-decoration:none;
-color:#fff;
-padding:10px 14px;
-border-radius:8px;
+padding:12px 18px;
+border-radius:10px;
 font-weight:bold;
-font-size:14px
 }
-
-.call-btn{background:#333}
-
-.whatsapp-btn{background:#168c3a}
 
 main{
 max-width:1200px;
 margin:auto;
-padding:25px 16px 50px
+padding:20px;
 }
 
-.hero{
-background:#fff;
+/* الإعلانات */
+
+.ads{
+margin-bottom:25px;
+}
+
+.ad{
+background:white;
 border-radius:18px;
+overflow:hidden;
+box-shadow:0 4px 18px #0001;
+display:flex;
+min-height:230px;
+}
+
+.ad-image{
+width:45%;
+object-fit:cover;
+}
+
+.ad-content{
 padding:28px;
-margin-bottom:20px;
-box-shadow:0 3px 15px #0000000d
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
 }
 
-.hero h2{
-margin:0 0 8px;
-font-size:28px
+.ad-content h2{
+color:#0756a8;
+font-size:28px;
+margin:0 0 10px;
 }
 
-.hero p{
-margin:0;
-color:#666;
-line-height:1.8
+.ad-content p{
+font-size:17px;
+line-height:1.7;
+}
+
+.ad-button{
+display:inline-block;
+width:max-content;
+background:#0756a8;
+color:white;
+text-decoration:none;
+padding:12px 20px;
+border-radius:9px;
+font-weight:bold;
 }
 
 .controls{
-background:#fff;
+background:white;
 padding:15px;
 border-radius:14px;
-display:grid;
-grid-template-columns:2fr 1fr;
+box-shadow:0 2px 10px #0001;
+display:flex;
 gap:10px;
 margin-bottom:20px;
-box-shadow:0 2px 10px #0000000d
 }
 
 .controls input,
@@ -127,274 +126,181 @@ width:100%;
 padding:13px;
 border:1px solid #ddd;
 border-radius:9px;
-font-size:15px;
-background:#fff
+font:inherit;
 }
 
 .status{
 margin-bottom:15px;
-color:#666;
-font-size:14px
+color:#667085;
 }
 
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-gap:18px
+gap:18px;
 }
 
 .card{
-background:#fff;
-border-radius:16px;
+background:white;
+border-radius:15px;
 overflow:hidden;
-box-shadow:0 3px 15px #00000012;
+box-shadow:0 3px 12px #0001;
 transition:.2s;
-display:flex;
-flex-direction:column
 }
 
 .card:hover{
 transform:translateY(-3px);
-box-shadow:0 7px 20px #00000018
 }
 
-.product-image{
+.card img{
 width:100%;
-height:240px;
+height:230px;
 object-fit:cover;
-display:block;
-background:#eee
+background:#eef3f8;
 }
 
 .no-image{
-height:240px;
-background:#eee;
+height:230px;
 display:flex;
 align-items:center;
 justify-content:center;
-color:#999
+background:#eef3f8;
+color:#98a2b3;
 }
 
 .info{
 padding:16px;
-display:flex;
-flex-direction:column;
-flex:1
-}
-
-.category{
-font-size:12px;
-color:#777;
-margin-bottom:7px
 }
 
 .info h3{
 margin:0 0 8px;
-font-size:19px
+font-size:19px;
+}
+
+.category{
+color:#667085;
+font-size:14px;
+margin-bottom:8px;
 }
 
 .description{
-color:#666;
 font-size:14px;
-line-height:1.7;
-min-height:45px
+line-height:1.6;
+color:#475467;
+min-height:40px;
 }
 
 .price{
 font-size:21px;
 font-weight:bold;
-margin:12px 0
+color:#0756a8;
+margin:12px 0;
 }
 
-.available{
+.badge{
 display:inline-block;
-width:max-content;
 padding:6px 10px;
 border-radius:20px;
-background:#e7f7eb;
-color:#16803a;
 font-size:13px;
-margin-bottom:12px
+background:#e8f7e8;
+color:#16801d;
 }
 
-.unavailable{
-display:inline-block;
-width:max-content;
-padding:6px 10px;
-border-radius:20px;
+.off{
 background:#eee;
 color:#777;
-font-size:13px;
-margin-bottom:12px
-}
-
-.order-btn{
-display:block;
-text-align:center;
-text-decoration:none;
-background:#168c3a;
-color:#fff;
-padding:12px;
-border-radius:9px;
-font-weight:bold;
-margin-top:auto
-}
-
-.order-btn:hover{
-background:#11732f
 }
 
 .empty{
-background:#fff;
-border-radius:15px;
+background:white;
 padding:40px;
 text-align:center;
-color:#777
+border-radius:15px;
+color:#667085;
 }
 
 footer{
-background:#111;
-color:#fff;
-padding:30px 16px;
-margin-top:30px
+margin-top:40px;
+background:#073b73;
+color:white;
+padding:25px 20px;
+text-align:center;
 }
 
-.footer-inner{
-max-width:1200px;
-margin:auto;
-text-align:center
+footer p{
+margin:7px;
 }
 
-.footer-inner h3{
-margin-top:0
-}
-
-.footer-inner p{
-color:#ccc
-}
-
-.footer-buttons{
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap
-}
-
-.footer-buttons a{
-text-decoration:none;
-color:#fff;
-padding:11px 18px;
-border-radius:9px
-}
-
-.footer-call{background:#333}
-
-.footer-whatsapp{background:#168c3a}
-
-.floating-whatsapp{
-position:fixed;
-bottom:20px;
-left:20px;
-width:58px;
-height:58px;
-border-radius:50%;
-background:#168c3a;
-color:#fff;
-text-decoration:none;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
+.footer-whatsapp{
+color:white;
 font-weight:bold;
-box-shadow:0 4px 15px #0004;
-z-index:50
 }
 
 @media(max-width:700px){
 
-header{padding:15px 12px}
-
 .header-inner{
 flex-direction:column;
-align-items:stretch
+text-align:center;
 }
 
-.brand{
-justify-content:center
+.logo h1{
+font-size:23px;
 }
 
-.brand h1{
-font-size:19px;
-text-align:center
+.ad{
+display:block;
 }
 
-.brand p{
-text-align:center
+.ad-image{
+width:100%;
+height:210px;
 }
 
-.header-buttons{
-justify-content:center
+.ad-content{
+padding:20px;
 }
 
-.header-buttons a{
-flex:1;
-text-align:center
-}
-
-.hero{
-padding:20px
-}
-
-.hero h2{
-font-size:23px
+.ad-content h2{
+font-size:23px;
 }
 
 .controls{
-grid-template-columns:1fr
+flex-direction:column;
 }
 
 .grid{
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:10px
+grid-template-columns:repeat(2,1fr);
+gap:10px;
 }
 
-.product-image,
+.card img,
 .no-image{
-height:170px
+height:170px;
 }
 
 .info{
-padding:11px
+padding:11px;
 }
 
 .info h3{
-font-size:16px
-}
-
-.description{
-font-size:12px
+font-size:16px;
 }
 
 .price{
-font-size:17px
-}
-
-.order-btn{
-font-size:13px;
-padding:10px
+font-size:18px;
 }
 
 }
 
-@media(max-width:400px){
+@media(max-width:420px){
 
 .grid{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
-.product-image,
+.card img,
 .no-image{
-height:230px
+height:220px;
 }
 
 }
@@ -408,61 +314,46 @@ height:230px
 
 <div class="header-inner">
 
-<div class="brand">
-
 <div class="logo">
-بيت
-</div>
 
-<div>
 <h1>شركة بيت المراتب للمفروشات</h1>
-<p>مراتب ومفروشات</p>
-</div>
+
+<p>الكتالوج الإلكتروني</p>
 
 </div>
 
-<div class="header-buttons">
-
 <a
-class="call-btn"
-href="tel:+966546510165">
-اتصال
-</a>
-
-<a
-class="whatsapp-btn"
+class="whatsapp"
 href="https://wa.me/966546510165"
 target="_blank">
-واتساب
-</a>
 
-</div>
+تواصل معنا عبر واتساب
+
+</a>
 
 </div>
 
 </header>
 
+
 <main>
 
-<section class="hero">
+<!-- الإعلانات -->
 
-<h2>
-كتالوج شركة بيت المراتب للمفروشات
-</h2>
+<section class="ads">
 
-<p>
-تصفح منتجات شركة بيت المراتب للمفروشات،
-واختر المنتج المناسب لك، ويمكنك التواصل معنا مباشرة عبر الواتساب للاستفسار أو الطلب.
-</p>
+<div id="adsContainer"></div>
 
 </section>
+
+
+<!-- البحث والتصنيف -->
 
 <div class="controls">
 
 <input
 id="search"
-placeholder="ابحث عن منتج..."
->
+placeholder="ابحث عن منتج أو كود...">
 
 <select id="category">
 
@@ -474,11 +365,15 @@ placeholder="ابحث عن منتج..."
 
 </div>
 
+
 <div
 id="status"
 class="status">
+
 جاري تحميل المنتجات...
+
 </div>
+
 
 <div
 id="grid"
@@ -487,46 +382,25 @@ class="grid">
 
 </main>
 
+
 <footer>
 
-<div class="footer-inner">
-
-<h3>
-شركة بيت المراتب للمفروشات
-</h3>
-
 <p>
-للاستفسار والطلبات تواصل معنا
+شركة بيت المراتب للمفروشات
 </p>
 
-<div class="footer-buttons">
-
-<a
-class="footer-call"
-href="tel:+966546510165">
-اتصال: 0546510165
-</a>
-
+<p>
+للتواصل:
 <a
 class="footer-whatsapp"
 href="https://wa.me/966546510165"
 target="_blank">
-التواصل عبر واتساب
+0546510165
 </a>
-
-</div>
-
-</div>
+</p>
 
 </footer>
 
-<a
-class="floating-whatsapp"
-href="https://wa.me/966546510165"
-target="_blank"
-title="تواصل معنا عبر واتساب">
-W
-</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -540,34 +414,50 @@ SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
-let products=[];
+let products = [];
 
-const grid=document.getElementById('grid');
-const status=document.getElementById('status');
-const search=document.getElementById('search');
-const category=document.getElementById('category');
+let ads = [];
+
+const grid =
+document.getElementById('grid');
+
+const status =
+document.getElementById('status');
+
+const search =
+document.getElementById('search');
+
+const category =
+document.getElementById('category');
+
+const adsContainer =
+document.getElementById('adsContainer');
+
 
 function esc(v){
 
-return String(v??'')
+return String(v ?? '')
 .replace(
 /[&<>"']/g,
 m=>({
+
 '&':'&amp;',
 '<':'&lt;',
 '>':'&gt;',
 '"':'&quot;',
 "'":'&#039;'
+
 }[m])
 );
 
 }
 
-async function load(){
 
-status.textContent='جاري تحميل المنتجات...';
+/* تحميل المنتجات */
 
-const r=
+async function loadProducts(){
+
+const r =
 await db
 .from('products')
 .select('*')
@@ -576,29 +466,28 @@ await db
 
 if(r.error){
 
-console.error(r.error);
-
-status.textContent=
-'تعذر تحميل المنتجات: '+r.error.message;
+status.textContent =
+'تعذر تحميل المنتجات: ' +
+r.error.message;
 
 return;
 
 }
 
-products=r.data||[];
+products =
+r.data || [];
 
-const categories=[
+category.innerHTML =
+'<option value="">كل التصنيفات</option>';
+
+[
 ...new Set(
 products
 .map(x=>x.category)
 .filter(Boolean)
 )
-];
-
-category.innerHTML=
-'<option value="">كل التصنيفات</option>';
-
-categories.forEach(c=>{
+]
+.forEach(c=>{
 
 category.insertAdjacentHTML(
 'beforeend',
@@ -615,17 +504,24 @@ render();
 
 }
 
+
+/* عرض المنتجات */
+
 function render(){
 
-const q=
-search.value.trim().toLowerCase();
+const q =
+search.value
+.toLowerCase()
+.trim();
 
-const c=category.value;
+const c =
+category.value;
 
-const filtered=
+const result =
 products.filter(p=>{
 
-const text=[
+const text =
+[
 p.name,
 p.code,
 p.description,
@@ -634,19 +530,20 @@ p.category
 .join(' ')
 .toLowerCase();
 
-return(
-(!q||text.includes(q))&&
-(!c||p.category===c)
-);
+return
+(!q || text.includes(q))
+&&
+(!c || p.category === c);
 
 });
 
-status.textContent=
-'عدد المنتجات: '+filtered.length;
+status.textContent =
+'عدد المنتجات: ' +
+result.length;
 
-if(!filtered.length){
+if(!result.length){
 
-grid.innerHTML=
+grid.innerHTML =
 `
 <div class="empty">
 لا توجد منتجات مطابقة للبحث
@@ -657,115 +554,200 @@ return;
 
 }
 
-grid.innerHTML=
-filtered.map(p=>{
+grid.innerHTML =
+result.map(p=>`
 
-const image=
+<article class="card">
+
+${
 p.image_url
+
 ?
+
 `
 <img
-class="product-image"
 src="${esc(p.image_url)}"
-alt="${esc(p.name)}"
-loading="lazy">
+alt="${esc(p.name)}">
 `
+
 :
+
 `
 <div class="no-image">
 لا توجد صورة
 </div>
-`;
-
-const whatsappText=
-encodeURIComponent(
-'السلام عليكم، أريد الاستفسار عن المنتج: '+
-(p.name||'')+
-(p.code?' - كود: '+p.code:'')
-);
-
-return`
-
-<article class="card">
-
-${image}
+`
+}
 
 <div class="info">
-
-${
-p.category
-?
-`
-<div class="category">
-${esc(p.category)}
-</div>
-`
-:''
-}
 
 <h3>
 ${esc(p.name)}
 </h3>
 
-${
-p.description
-?
-`
+<div class="category">
+${esc(p.category || '')}
+</div>
+
 <div class="description">
-${esc(p.description)}
+${esc(p.description || '')}
 </div>
-`
-:''
-}
 
-${
-p.price!==null &&
-p.price!==undefined &&
-p.price!==''
-?
-`
 <div class="price">
-${esc(p.price)} ريال
-</div>
-`
-:''
-}
 
-<span class="${
-p.available
-?'available'
-:'unavailable'
-}">
 ${
-p.available
-?'متوفر'
-:'غير متوفر'
-}
-</span>
+p.price !== null &&
+p.price !== undefined &&
+p.price !== ''
 
-<a
-class="order-btn"
-href="https://wa.me/966546510165?text=${whatsappText}"
-target="_blank">
-استفسر عبر واتساب
-</a>
+?
+
+Number(p.price).toLocaleString('ar-SA') +
+' ريال'
+
+:
+
+''
+}
+
+</div>
+
+<span
+class="badge ${p.available?'':'off'}">
+
+${p.available?'متوفر':'غير متوفر'}
+
+</span>
 
 </div>
 
 </article>
 
-`;
-
-}).join('');
+`).join('');
 
 }
 
-search.oninput=render;
-category.onchange=render;
 
-load();
+/* تحميل الإعلانات */
+
+async function loadAds(){
+
+const r =
+await db
+.from('ads')
+.select('*')
+.eq('active',true)
+.order('sort_order')
+.order('id',{ascending:false});
+
+if(r.error){
+
+console.error(
+'Ads error:',
+r.error
+);
+
+return;
+
+}
+
+ads =
+r.data || [];
+
+renderAds();
+
+}
+
+
+/* عرض الإعلانات */
+
+function renderAds(){
+
+if(!ads.length){
+
+adsContainer.innerHTML = '';
+
+return;
+
+}
+
+adsContainer.innerHTML =
+ads.map(ad=>`
+
+<div class="ad">
+
+${
+ad.image_url
+
+?
+
+`
+<img
+class="ad-image"
+src="${esc(ad.image_url)}"
+alt="${esc(ad.title)}">
+`
+
+:
+
+''
+}
+
+<div class="ad-content">
+
+<h2>
+${esc(ad.title || '')}
+</h2>
+
+<p>
+${esc(ad.description || '')}
+</p>
+
+${
+ad.button_url
+
+?
+
+`
+<a
+class="ad-button"
+href="${esc(ad.button_url)}"
+target="_blank">
+
+${esc(ad.button_text || 'اعرف المزيد')}
+
+</a>
+`
+
+:
+
+''
+}
+
+</div>
+
+</div>
+
+`).join('');
+
+}
+
+
+search.oninput =
+render;
+
+category.onchange =
+render;
+
+
+/* التشغيل */
+
+loadProducts();
+
+loadAds();
 
 </script>
 
 </body>
+
 </html>
