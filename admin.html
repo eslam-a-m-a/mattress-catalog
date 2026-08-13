@@ -1,55 +1,122 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>لوحة تحكم</title>
+<title>لوحة تحكم شركة بيت المراتب للمفروشات</title>
 
 <style>
 body{
-  font-family:Arial;
-  background:#f5f5f5;
-  margin:0
+font-family:Arial,Tahoma,sans-serif;
+background:#f4f7fb;
+margin:0;
+color:#222;
 }
+
 .wrap{
-  max-width:900px;
-  margin:auto;
-  padding:20px
+max-width:1000px;
+margin:auto;
+padding:20px;
 }
+
+h1{
+color:#0756a8;
+}
+
 .box{
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:18px
+background:white;
+padding:20px;
+border-radius:14px;
+margin-bottom:18px;
+box-shadow:0 2px 12px #0001;
 }
+
 input,textarea,button{
-  font:inherit;
-  padding:10px;
-  border:1px solid #ddd;
-  border-radius:8px;
-  box-sizing:border-box
+font:inherit;
+padding:11px;
+border:1px solid #ddd;
+border-radius:8px;
+box-sizing:border-box;
 }
+
 input,textarea{
-  width:100%;
-  margin:5px 0
+width:100%;
+margin:5px 0 10px;
 }
+
+textarea{
+min-height:90px;
+resize:vertical;
+}
+
 button{
-  background:#111;
-  color:#fff;
-  margin:4px;
-  cursor:pointer
+background:#0756a8;
+color:white;
+border:0;
+margin:4px;
+cursor:pointer;
 }
+
 .danger{
-  background:#b00020
+background:#b00020;
 }
+
+.green{
+background:#159447;
+}
+
 .hidden{
-  display:none
+display:none;
 }
+
 .item{
-  display:flex;
-  justify-content:space-between;
-  border-top:1px solid #eee;
-  padding:10px 0
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+border-top:1px solid #eee;
+padding:12px 0;
+}
+
+.item-info{
+flex:1;
+}
+
+.item-image{
+width:70px;
+height:55px;
+object-fit:cover;
+border-radius:7px;
+margin-left:10px;
+vertical-align:middle;
+}
+
+.item-actions{
+white-space:nowrap;
+}
+
+.section-title{
+color:#0756a8;
+border-bottom:2px solid #e6edf5;
+padding-bottom:10px;
+}
+
+.checkbox{
+display:flex;
+align-items:center;
+gap:8px;
+margin:10px 0;
+}
+
+.checkbox input{
+width:auto;
+margin:0;
+}
+
+.msg{
+margin-top:10px;
+font-weight:bold;
 }
 </style>
 </head>
@@ -58,24 +125,29 @@ button{
 
 <div class="wrap">
 
-<h1>لوحة تحكم بيت المراتب</h1>
+<h1>
+لوحة تحكم شركة بيت المراتب للمفروشات
+</h1>
 
 <!-- تسجيل الدخول -->
+
 <div id="login" class="box">
 
-<input
-  id="email"
-  type="email"
-  placeholder="البريد الإلكتروني"
->
+<h2>تسجيل الدخول</h2>
 
 <input
-  id="password"
-  type="password"
-  placeholder="كلمة المرور"
->
+id="email"
+type="email"
+placeholder="البريد الإلكتروني">
 
-<button id="loginBtn">دخول</button>
+<input
+id="password"
+type="password"
+placeholder="كلمة المرور">
+
+<button id="loginBtn">
+دخول
+</button>
 
 <div id="loginMsg"></div>
 
@@ -83,562 +155,876 @@ button{
 
 
 <!-- لوحة التحكم -->
+
 <div id="app" class="hidden">
 
-<button id="logout">تسجيل الخروج</button>
-
-
-<!-- إضافة / تعديل منتج -->
-<div class="box">
-
-<h2 id="title">إضافة منتج</h2>
-
-<input
-  id="code"
-  placeholder="كود المنتج"
->
-
-<input
-  id="name"
-  placeholder="اسم المنتج"
->
-
-<input
-  id="category"
-  placeholder="التصنيف"
->
-
-<input
-  id="price"
-  type="number"
-  step="0.01"
-  placeholder="السعر"
->
-
-<textarea
-  id="description"
-  placeholder="الوصف"
-></textarea>
-
-<label>
-<input
-  id="available"
-  type="checkbox"
-  checked
->
-متوفر
-</label>
-
-<input
-  id="sort"
-  type="number"
-  placeholder="الترتيب"
->
-
-<input
-  id="image"
-  type="file"
-  accept="image/*"
->
-
-<button id="save">حفظ</button>
-
-<button id="cancel" class="hidden">
-إلغاء
+<button id="logout">
+تسجيل الخروج
 </button>
-
-<div id="msg"></div>
-
-</div>
 
 
 <!-- المنتجات -->
+
 <div class="box">
 
-<h2>المنتجات</h2>
+<h2 class="section-title">
+إدارة المنتجات
+</h2>
 
-<div id="list"></div>
+<h3 id="productTitle">
+إضافة منتج
+</h3>
 
+<input id="code" placeholder="كود المنتج">
+
+<input id="name" placeholder="اسم المنتج">
+
+<input id="category" placeholder="التصنيف">
+
+<input
+id="price"
+type="number"
+step="0.01"
+placeholder="السعر">
+
+<textarea
+id="description"
+placeholder="الوصف"></textarea>
+
+<label class="checkbox">
+
+<input
+id="available"
+type="checkbox"
+checked>
+
+متوفر
+
+</label>
+
+<input
+id="sort"
+type="number"
+placeholder="الترتيب">
+
+<input
+id="image"
+type="file"
+accept="image/*">
+
+<button id="saveProduct">
+حفظ المنتج
+</button>
+
+<button
+id="cancelProduct"
+class="hidden">
+إلغاء
+</button>
+
+<div
+id="productMsg"
+class="msg">
+</div>
+
+</div>
+
+
+<!-- قائمة المنتجات -->
+
+<div class="box">
+
+<h2 class="section-title">
+المنتجات الحالية
+</h2>
+
+<div id="productList">
+جاري التحميل...
+</div>
+
+</div>
+
+
+<!-- الإعلانات -->
+
+<div class="box">
+
+<h2 class="section-title">
+إدارة الإعلانات
+</h2>
+
+<h3 id="adTitle">
+إضافة إعلان
+</h3>
+
+<input
+id="adName"
+placeholder="عنوان الإعلان">
+
+<textarea
+id="adDescription"
+placeholder="وصف الإعلان"></textarea>
+
+<input
+id="adButtonText"
+placeholder="نص الزر مثال: شاهد العرض">
+
+<input
+id="adButtonUrl"
+placeholder="رابط الزر">
+
+<input
+id="adSort"
+type="number"
+placeholder="ترتيب الإعلان">
+
+<label class="checkbox">
+
+<input
+id="adActive"
+type="checkbox"
+checked>
+
+الإعلان فعال
+
+</label>
+
+<input
+id="adImage"
+type="file"
+accept="image/*">
+
+<button
+id="saveAd"
+class="green">
+حفظ الإعلان
+</button>
+
+<button
+id="cancelAd"
+class="hidden">
+إلغاء
+</button>
+
+<div
+id="adMsg"
+class="msg">
+</div>
+
+</div>
+
+
+<!-- قائمة الإعلانات -->
+
+<div class="box">
+
+<h2 class="section-title">
+الإعلانات الحالية
+</h2>
+
+<div id="adList">
+جاري التحميل...
 </div>
 
 </div>
 
 </div>
 
+</div>
 
-<!-- Supabase -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- إعدادات Supabase -->
 <script src="config.js"></script>
-
 
 <script>
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
+const db =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
 );
 
-let editing = null;
-let items = [];
+let editingProduct = null;
+let editingAd = null;
 
-const $ = x => document.getElementById(x);
+let products = [];
+let ads = [];
+
+const $ =
+id => document.getElementById(id);
 
 
-// =========================
-// تشغيل الصفحة
-// =========================
+/* تسجيل الدخول */
 
 async function init(){
 
-  let r = await db.auth.getSession();
+const r =
+await db.auth.getSession();
 
-  show(!!r.data.session);
+show(!!r.data.session);
 
-  if(r.data.session){
-    load();
-  }
+if(r.data.session){
+
+loadProducts();
+loadAds();
 
 }
 
+}
 
-// =========================
-// إظهار / إخفاء لوحة التحكم
-// =========================
 
 function show(on){
 
-  $('login').classList.toggle(
-    'hidden',
-    on
-  );
+$('login')
+.classList.toggle('hidden',on);
 
-  $('app').classList.toggle(
-    'hidden',
-    !on
-  );
+$('app')
+.classList.toggle('hidden',!on);
 
 }
 
 
-// =========================
-// تسجيل الدخول
-// =========================
+$('loginBtn').onclick =
+async()=>{
 
-$('loginBtn').onclick = async () => {
+const email =
+$('email').value.trim();
 
-  const email = $('email').value.trim();
+const password =
+$('password').value;
 
-  const password = $('password').value;
+$('loginMsg').textContent =
+'جاري تسجيل الدخول...';
 
-  $('loginMsg').textContent =
-    'جاري تسجيل الدخول...';
+try{
 
-  try {
+const {error} =
+await db.auth.signInWithPassword({
+email:email,
+password:password
+});
 
-    const { data, error } =
-      await db.auth.signInWithPassword({
+if(error){
 
-        email: email,
+$('loginMsg').textContent =
+error.message;
 
-        password: password
+return;
 
-      });
+}
 
+$('loginMsg').textContent =
+'تم تسجيل الدخول';
 
-    if(error){
+show(true);
 
-      $('loginMsg').textContent =
-        error.message;
+loadProducts();
+loadAds();
 
-      console.error(error);
+}catch(e){
 
-      return;
+$('loginMsg').textContent =
+e.message;
 
-    }
-
-
-    $('loginMsg').textContent =
-      'تم تسجيل الدخول';
-
-
-    show(true);
-
-    load();
-
-
-  } catch(e){
-
-    $('loginMsg').textContent =
-      e.message;
-
-    console.error(e);
-
-  }
+}
 
 };
 
 
-// =========================
-// تسجيل الخروج
-// =========================
+$('logout').onclick =
+async()=>{
 
-$('logout').onclick = async () => {
+await db.auth.signOut();
 
-  await db.auth.signOut();
-
-  show(false);
+show(false);
 
 };
 
 
-// =========================
-// حفظ المنتج
-// =========================
+/* رفع الصور */
 
-$('save').onclick = async () => {
+async function uploadImage(file){
 
-  let payload = {
+if(!file){
+return null;
+}
 
-    code: $('code').value.trim(),
+const ext =
+(file.name.split('.').pop() || 'jpg')
+.toLowerCase();
 
-    name: $('name').value.trim(),
+const path =
+crypto.randomUUID() + '.' + ext;
 
-    category: $('category').value.trim(),
+const r =
+await db.storage
+.from('product-images')
+.upload(path,file);
 
-    description:
-      $('description').value.trim(),
+if(r.error){
+throw r.error;
+}
 
-    price:
-      $('price').value
-      ? Number($('price').value)
-      : null,
-
-    available:
-      $('available').checked,
-
-    sort_order:
-      Number($('sort').value || 0)
-
-  };
-
-
-  let f = $('image').files[0];
-
-
-  // رفع الصورة
-  if(f){
-
-    let ext =
-      (f.name.split('.').pop() || 'jpg')
-      .toLowerCase();
-
-    let path =
-      crypto.randomUUID() + '.' + ext;
-
-
-    let r =
-      await db.storage
-      .from('product-images')
-      .upload(path, f);
-
-
-    if(r.error){
-
-      $('msg').textContent =
-        r.error.message;
-
-      return;
-
-    }
-
-
-    payload.image_url =
-      db.storage
-      .from('product-images')
-      .getPublicUrl(path)
-      .data.publicUrl;
-
-  }
-
-
-  // إضافة أو تعديل
-  let r;
-
-  if(editing){
-
-    r =
-      await db
-      .from('products')
-      .update(payload)
-      .eq('id', editing);
-
-  }else{
-
-    r =
-      await db
-      .from('products')
-      .insert(payload);
-
-  }
-
-
-  $('msg').textContent =
-    r.error
-      ? r.error.message
-      : 'تم الحفظ';
-
-
-  if(!r.error){
-
-    reset();
-
-    load();
-
-  }
-
-};
-
-
-// =========================
-// إلغاء التعديل
-// =========================
-
-$('cancel').onclick = reset;
-
-
-// =========================
-// تحميل المنتجات
-// =========================
-
-async function load(){
-
-  let r =
-    await db
-    .from('products')
-    .select('*')
-    .order('sort_order')
-    .order('name');
-
-
-  if(r.error){
-
-    $('list').textContent =
-      r.error.message;
-
-    return;
-
-  }
-
-
-  items = r.data || [];
-
-
-  $('list').innerHTML =
-
-    items.map(p => `
-
-      <div class="item">
-
-        <span>
-
-          <b>
-            ${esc(p.name)}
-          </b>
-
-          —
-
-          ${p.available
-            ? 'متوفر'
-            : 'غير متوفر'}
-
-        </span>
-
-
-        <span>
-
-          <button
-            onclick="edit(${p.id})"
-          >
-            تعديل
-          </button>
-
-
-          <button
-            class="danger"
-            onclick="del(${p.id})"
-          >
-            حذف
-          </button>
-
-        </span>
-
-      </div>
-
-    `).join('')
-
-    || 'لا توجد منتجات';
+return db.storage
+.from('product-images')
+.getPublicUrl(path)
+.data.publicUrl;
 
 }
 
 
-// =========================
-// تعديل منتج
-// =========================
+/* =========================
+   المنتجات
+========================= */
 
-window.edit = id => {
+$('saveProduct').onclick =
+async()=>{
 
-  let p =
-    items.find(x => x.id == id);
+try{
 
+const payload = {
 
-  editing = id;
+code:$('code').value.trim(),
 
+name:$('name').value.trim(),
 
-  $('title').textContent =
-    'تعديل منتج';
+category:$('category').value.trim(),
 
+description:$('description').value.trim(),
 
-  $('code').value =
-    p.code || '';
+price:$('price').value
+? Number($('price').value)
+:null,
 
+available:$('available').checked,
 
-  $('name').value =
-    p.name || '';
+sort_order:
+Number($('sort').value || 0)
 
+};
 
-  $('category').value =
-    p.category || '';
+const file =
+$('image').files[0];
 
+if(file){
 
-  $('price').value =
-    p.price ?? '';
+payload.image_url =
+await uploadImage(file);
 
+}
 
-  $('description').value =
-    p.description || '';
+let r;
 
+if(editingProduct){
 
-  $('available').checked =
-    !!p.available;
+r =
+await db
+.from('products')
+.update(payload)
+.eq('id',editingProduct);
 
+}else{
 
-  $('sort').value =
-    p.sort_order || 0;
+r =
+await db
+.from('products')
+.insert(payload);
 
+}
 
-  $('cancel').classList.remove(
-    'hidden'
-  );
+if(r.error){
+
+$('productMsg').textContent =
+r.error.message;
+
+return;
+
+}
+
+$('productMsg').textContent =
+'تم حفظ المنتج بنجاح';
+
+resetProduct();
+
+loadProducts();
+
+}catch(e){
+
+$('productMsg').textContent =
+e.message;
+
+}
 
 };
 
 
-// =========================
-// حذف منتج
-// =========================
+async function loadProducts(){
 
-window.del = async id => {
+const r =
+await db
+.from('products')
+.select('*')
+.order('sort_order')
+.order('name');
 
-  if(
-    confirm('حذف المنتج؟')
-  ){
+if(r.error){
 
-    await db
-      .from('products')
-      .delete()
-      .eq('id', id);
+$('productList').textContent =
+r.error.message;
 
-    load();
+return;
 
-  }
+}
 
-};
+products =
+r.data || [];
 
+$('productList').innerHTML =
+products.map(p=>`
 
-// =========================
-// إعادة النموذج
-// =========================
+<div class="item">
 
-function reset(){
+<div class="item-info">
 
-  editing = null;
+${
+p.image_url
+?
+`
+<img
+class="item-image"
+src="${esc(p.image_url)}">
+`
+:''
+}
 
+<b>
+${esc(p.name)}
+</b>
 
-  $('title').textContent =
-    'إضافة منتج';
+<br>
 
+<small>
+${esc(p.category || '')}
+-
+${p.available?'متوفر':'غير متوفر'}
+</small>
 
-  [
-    'code',
-    'name',
-    'category',
-    'price',
-    'description',
-    'sort'
-  ].forEach(x => {
+</div>
 
-    $(x).value = '';
+<div class="item-actions">
 
-  });
+<button
+onclick="editProduct(${p.id})">
+تعديل
+</button>
 
+<button
+class="danger"
+onclick="deleteProduct(${p.id})">
+حذف
+</button>
 
-  $('available').checked =
-    true;
+</div>
 
+</div>
 
-  $('image').value =
-    '';
-
-
-  $('cancel').classList.add(
-    'hidden'
-  );
-
-
-  $('msg').textContent =
-    '';
+`).join('')
+|| 'لا توجد منتجات';
 
 }
 
 
-// =========================
-// حماية النصوص
-// =========================
+window.editProduct =
+id=>{
+
+const p =
+products.find(x=>x.id == id);
+
+if(!p){
+return;
+}
+
+editingProduct = id;
+
+$('productTitle').textContent =
+'تعديل المنتج';
+
+$('code').value =
+p.code || '';
+
+$('name').value =
+p.name || '';
+
+$('category').value =
+p.category || '';
+
+$('price').value =
+p.price ?? '';
+
+$('description').value =
+p.description || '';
+
+$('available').checked =
+!!p.available;
+
+$('sort').value =
+p.sort_order || 0;
+
+$('cancelProduct')
+.classList.remove('hidden');
+
+};
+
+
+window.deleteProduct =
+async id=>{
+
+if(!confirm('هل تريد حذف المنتج؟')){
+return;
+}
+
+const r =
+await db
+.from('products')
+.delete()
+.eq('id',id);
+
+if(r.error){
+
+alert(r.error.message);
+
+return;
+
+}
+
+loadProducts();
+
+};
+
+
+function resetProduct(){
+
+editingProduct = null;
+
+$('productTitle').textContent =
+'إضافة منتج';
+
+[
+'code',
+'name',
+'category',
+'price',
+'description',
+'sort'
+]
+.forEach(id=>{
+$(id).value = '';
+});
+
+$('available').checked = true;
+
+$('image').value = '';
+
+$('cancelProduct')
+.classList.add('hidden');
+
+};
+
+
+$('cancelProduct').onclick =
+resetProduct;
+
+
+/* =========================
+   الإعلانات
+========================= */
+
+$('saveAd').onclick =
+async()=>{
+
+try{
+
+const payload = {
+
+title:
+$('adName').value.trim(),
+
+description:
+$('adDescription').value.trim(),
+
+button_text:
+$('adButtonText').value.trim()
+|| 'اعرف المزيد',
+
+button_url:
+$('adButtonUrl').value.trim(),
+
+active:
+$('adActive').checked,
+
+sort_order:
+Number($('adSort').value || 0)
+
+};
+
+const file =
+$('adImage').files[0];
+
+if(file){
+
+payload.image_url =
+await uploadImage(file);
+
+}
+
+let r;
+
+if(editingAd){
+
+r =
+await db
+.from('ads')
+.update(payload)
+.eq('id',editingAd);
+
+}else{
+
+r =
+await db
+.from('ads')
+.insert(payload);
+
+}
+
+if(r.error){
+
+$('adMsg').textContent =
+r.error.message;
+
+return;
+
+}
+
+$('adMsg').textContent =
+'تم حفظ الإعلان بنجاح';
+
+resetAd();
+
+loadAds();
+
+}catch(e){
+
+$('adMsg').textContent =
+e.message;
+
+}
+
+};
+
+
+async function loadAds(){
+
+const r =
+await db
+.from('ads')
+.select('*')
+.order('sort_order')
+.order('id',{ascending:false});
+
+if(r.error){
+
+$('adList').textContent =
+r.error.message;
+
+return;
+
+}
+
+ads =
+r.data || [];
+
+$('adList').innerHTML =
+ads.map(ad=>`
+
+<div class="item">
+
+<div class="item-info">
+
+${
+ad.image_url
+?
+`
+<img
+class="item-image"
+src="${esc(ad.image_url)}">
+`
+:''
+}
+
+<b>
+${esc(ad.title)}
+</b>
+
+<br>
+
+<small>
+${ad.active?'فعال':'متوقف'}
+</small>
+
+</div>
+
+<div class="item-actions">
+
+<button
+onclick="editAd(${ad.id})">
+تعديل
+</button>
+
+<button
+class="danger"
+onclick="deleteAd(${ad.id})">
+حذف
+</button>
+
+</div>
+
+</div>
+
+`).join('')
+|| 'لا توجد إعلانات';
+
+}
+
+
+window.editAd =
+id=>{
+
+const ad =
+ads.find(x=>x.id == id);
+
+if(!ad){
+return;
+}
+
+editingAd = id;
+
+$('adTitle').textContent =
+'تعديل الإعلان';
+
+$('adName').value =
+ad.title || '';
+
+$('adDescription').value =
+ad.description || '';
+
+$('adButtonText').value =
+ad.button_text || '';
+
+$('adButtonUrl').value =
+ad.button_url || '';
+
+$('adSort').value =
+ad.sort_order || 0;
+
+$('adActive').checked =
+!!ad.active;
+
+$('cancelAd')
+.classList.remove('hidden');
+
+};
+
+
+window.deleteAd =
+async id=>{
+
+if(!confirm('هل تريد حذف الإعلان؟')){
+return;
+}
+
+const r =
+await db
+.from('ads')
+.delete()
+.eq('id',id);
+
+if(r.error){
+
+alert(r.error.message);
+
+return;
+
+}
+
+loadAds();
+
+};
+
+
+function resetAd(){
+
+editingAd = null;
+
+$('adTitle').textContent =
+'إضافة إعلان';
+
+[
+'adName',
+'adDescription',
+'adButtonText',
+'adButtonUrl',
+'adSort'
+]
+.forEach(id=>{
+$(id).value = '';
+});
+
+$('adActive').checked = true;
+
+$('adImage').value = '';
+
+$('cancelAd')
+.classList.add('hidden');
+
+};
+
+
+$('cancelAd').onclick =
+resetAd;
+
+
+/* حماية النصوص */
 
 function esc(v){
 
-  return String(v ?? '')
-    .replace(
-      /[&<>"']/g,
-      m => ({
+return String(v ?? '')
+.replace(
+/[&<>"']/g,
+m=>({
 
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        "'":'&#039;'
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#039;'
 
-      }[m])
-    );
+}[m])
+);
 
 }
 
 
-// =========================
-// مراقبة تسجيل الدخول
-// =========================
+/* متابعة تسجيل الدخول */
 
 db.auth.onAuthStateChange(
-  (_e, s) => show(!!s)
+(_e,s)=>show(!!s)
 );
 
-
-// تشغيل الصفحة
 init();
 
 </script>
 
 </body>
+
 </html>
