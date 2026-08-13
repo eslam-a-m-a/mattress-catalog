@@ -1,1 +1,644 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>لوحة تحكم</title><style>body{font-family:Arial;background:#f5f5f5;margin:0}.wrap{max-width:900px;margin:auto;padding:20px}.box{background:#fff;padding:20px;border-radius:12px;margin-bottom:18px}input,textarea,button{font:inherit;padding:10px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}input,textarea{width:100%;margin:5px 0}button{background:#111;color:#fff;margin:4px;cursor:pointer}.danger{background:#b00020}.hidden{display:none}.item{display:flex;justify-content:space-between;border-top:1px solid #eee;padding:10px 0}</style></head><body><div class="wrap"><h1>لوحة تحكم بيت المراتب</h1><div id="login" class="box"><input id="email" type="email" placeholder="البريد الإلكتروني"><input id="password" type="password" placeholder="كلمة المرور"><button id="loginBtn">دخول</button><div id="loginMsg"></div></div><div id="app" class="hidden"><button id="logout">تسجيل الخروج</button><div class="box"><h2 id="title">إضافة منتج</h2><input id="code" placeholder="كود المنتج"><input id="name" placeholder="اسم المنتج"><input id="category" placeholder="التصنيف"><input id="price" type="number" step="0.01" placeholder="السعر"><textarea id="description" placeholder="الوصف"></textarea><label><input id="available" type="checkbox" checked> متوفر</label><input id="sort" type="number" placeholder="الترتيب"><input id="image" type="file" accept="image/*"><button id="save">حفظ</button><button id="cancel" class="hidden">إلغاء</button><div id="msg"></div></div><div class="box"><h2>المنتجات</h2><div id="list"></div></div></div></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script>const db=supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);let editing=null,items=[];const $=x=>document.getElementById(x);async function init(){let r=await db.auth.getSession();show(!!r.data.session);if(r.data.session)load()}function show(on){$('login').classList.toggle('hidden',on);$('app').classList.toggle('hidden',!on)}$('loginBtn').onclick=async()=>{let r=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('loginMsg').textContent=r.error?r.error.message:'';if(!r.error){show(true);load()}};$('logout').onclick=async()=>{await db.auth.signOut();show(false)};$('save').onclick=async()=>{let payload={code:$('code').value.trim(),name:$('name').value.trim(),category:$('category').value.trim(),description:$('description').value.trim(),price:$('price').value?Number($('price').value):null,available:$('available').checked,sort_order:Number($('sort').value||0)};let f=$('image').files[0];if(f){let ext=(f.name.split('.').pop()||'jpg').toLowerCase(),path=crypto.randomUUID()+'.'+ext,r=await db.storage.from('product-images').upload(path,f);if(r.error){$('msg').textContent=r.error.message;return}payload.image_url=db.storage.from('product-images').getPublicUrl(path).data.publicUrl}let r=editing?await db.from('products').update(payload).eq('id',editing):await db.from('products').insert(payload);$('msg').textContent=r.error?r.error.message:'تم الحفظ';if(!r.error){reset();load()}};$('cancel').onclick=reset;async function load(){let r=await db.from('products').select('*').order('sort_order').order('name');if(r.error){$('list').textContent=r.error.message;return}items=r.data||[];$('list').innerHTML=items.map(p=>`<div class="item"><span><b>${esc(p.name)}</b> — ${p.available?'متوفر':'غير متوفر'}</span><span><button onclick="edit(${p.id})">تعديل</button><button class="danger" onclick="del(${p.id})">حذف</button></span></div>`).join('')||'لا توجد منتجات'}window.edit=id=>{let p=items.find(x=>x.id==id);editing=id;$('title').textContent='تعديل منتج';$('code').value=p.code||'';$('name').value=p.name||'';$('category').value=p.category||'';$('price').value=p.price??'';$('description').value=p.description||'';$('available').checked=!!p.available;$('sort').value=p.sort_order||0;$('cancel').classList.remove('hidden')};window.del=async id=>{if(confirm('حذف المنتج؟')){await db.from('products').delete().eq('id',id);load()}};function reset(){editing=null;$('title').textContent='إضافة منتج';['code','name','category','price','description','sort'].forEach(x=>$(x).value='');$('available').checked=true;$('image').value='';$('cancel').classList.add('hidden')}function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}db.auth.onAuthStateChange((_e,s)=>show(!!s));init();</script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة تحكم</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f5f5;
+  margin:0
+}
+.wrap{
+  max-width:900px;
+  margin:auto;
+  padding:20px
+}
+.box{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:18px
+}
+input,textarea,button{
+  font:inherit;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  box-sizing:border-box
+}
+input,textarea{
+  width:100%;
+  margin:5px 0
+}
+button{
+  background:#111;
+  color:#fff;
+  margin:4px;
+  cursor:pointer
+}
+.danger{
+  background:#b00020
+}
+.hidden{
+  display:none
+}
+.item{
+  display:flex;
+  justify-content:space-between;
+  border-top:1px solid #eee;
+  padding:10px 0
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<h1>لوحة تحكم بيت المراتب</h1>
+
+<!-- تسجيل الدخول -->
+<div id="login" class="box">
+
+<input
+  id="email"
+  type="email"
+  placeholder="البريد الإلكتروني"
+>
+
+<input
+  id="password"
+  type="password"
+  placeholder="كلمة المرور"
+>
+
+<button id="loginBtn">دخول</button>
+
+<div id="loginMsg"></div>
+
+</div>
+
+
+<!-- لوحة التحكم -->
+<div id="app" class="hidden">
+
+<button id="logout">تسجيل الخروج</button>
+
+
+<!-- إضافة / تعديل منتج -->
+<div class="box">
+
+<h2 id="title">إضافة منتج</h2>
+
+<input
+  id="code"
+  placeholder="كود المنتج"
+>
+
+<input
+  id="name"
+  placeholder="اسم المنتج"
+>
+
+<input
+  id="category"
+  placeholder="التصنيف"
+>
+
+<input
+  id="price"
+  type="number"
+  step="0.01"
+  placeholder="السعر"
+>
+
+<textarea
+  id="description"
+  placeholder="الوصف"
+></textarea>
+
+<label>
+<input
+  id="available"
+  type="checkbox"
+  checked
+>
+متوفر
+</label>
+
+<input
+  id="sort"
+  type="number"
+  placeholder="الترتيب"
+>
+
+<input
+  id="image"
+  type="file"
+  accept="image/*"
+>
+
+<button id="save">حفظ</button>
+
+<button id="cancel" class="hidden">
+إلغاء
+</button>
+
+<div id="msg"></div>
+
+</div>
+
+
+<!-- المنتجات -->
+<div class="box">
+
+<h2>المنتجات</h2>
+
+<div id="list"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- إعدادات Supabase -->
+<script src="config.js"></script>
+
+
+<script>
+
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+let editing = null;
+let items = [];
+
+const $ = x => document.getElementById(x);
+
+
+// =========================
+// تشغيل الصفحة
+// =========================
+
+async function init(){
+
+  let r = await db.auth.getSession();
+
+  show(!!r.data.session);
+
+  if(r.data.session){
+    load();
+  }
+
+}
+
+
+// =========================
+// إظهار / إخفاء لوحة التحكم
+// =========================
+
+function show(on){
+
+  $('login').classList.toggle(
+    'hidden',
+    on
+  );
+
+  $('app').classList.toggle(
+    'hidden',
+    !on
+  );
+
+}
+
+
+// =========================
+// تسجيل الدخول
+// =========================
+
+$('loginBtn').onclick = async () => {
+
+  const email = $('email').value.trim();
+
+  const password = $('password').value;
+
+  $('loginMsg').textContent =
+    'جاري تسجيل الدخول...';
+
+  try {
+
+    const { data, error } =
+      await db.auth.signInWithPassword({
+
+        email: email,
+
+        password: password
+
+      });
+
+
+    if(error){
+
+      $('loginMsg').textContent =
+        error.message;
+
+      console.error(error);
+
+      return;
+
+    }
+
+
+    $('loginMsg').textContent =
+      'تم تسجيل الدخول';
+
+
+    show(true);
+
+    load();
+
+
+  } catch(e){
+
+    $('loginMsg').textContent =
+      e.message;
+
+    console.error(e);
+
+  }
+
+};
+
+
+// =========================
+// تسجيل الخروج
+// =========================
+
+$('logout').onclick = async () => {
+
+  await db.auth.signOut();
+
+  show(false);
+
+};
+
+
+// =========================
+// حفظ المنتج
+// =========================
+
+$('save').onclick = async () => {
+
+  let payload = {
+
+    code: $('code').value.trim(),
+
+    name: $('name').value.trim(),
+
+    category: $('category').value.trim(),
+
+    description:
+      $('description').value.trim(),
+
+    price:
+      $('price').value
+      ? Number($('price').value)
+      : null,
+
+    available:
+      $('available').checked,
+
+    sort_order:
+      Number($('sort').value || 0)
+
+  };
+
+
+  let f = $('image').files[0];
+
+
+  // رفع الصورة
+  if(f){
+
+    let ext =
+      (f.name.split('.').pop() || 'jpg')
+      .toLowerCase();
+
+    let path =
+      crypto.randomUUID() + '.' + ext;
+
+
+    let r =
+      await db.storage
+      .from('product-images')
+      .upload(path, f);
+
+
+    if(r.error){
+
+      $('msg').textContent =
+        r.error.message;
+
+      return;
+
+    }
+
+
+    payload.image_url =
+      db.storage
+      .from('product-images')
+      .getPublicUrl(path)
+      .data.publicUrl;
+
+  }
+
+
+  // إضافة أو تعديل
+  let r;
+
+  if(editing){
+
+    r =
+      await db
+      .from('products')
+      .update(payload)
+      .eq('id', editing);
+
+  }else{
+
+    r =
+      await db
+      .from('products')
+      .insert(payload);
+
+  }
+
+
+  $('msg').textContent =
+    r.error
+      ? r.error.message
+      : 'تم الحفظ';
+
+
+  if(!r.error){
+
+    reset();
+
+    load();
+
+  }
+
+};
+
+
+// =========================
+// إلغاء التعديل
+// =========================
+
+$('cancel').onclick = reset;
+
+
+// =========================
+// تحميل المنتجات
+// =========================
+
+async function load(){
+
+  let r =
+    await db
+    .from('products')
+    .select('*')
+    .order('sort_order')
+    .order('name');
+
+
+  if(r.error){
+
+    $('list').textContent =
+      r.error.message;
+
+    return;
+
+  }
+
+
+  items = r.data || [];
+
+
+  $('list').innerHTML =
+
+    items.map(p => `
+
+      <div class="item">
+
+        <span>
+
+          <b>
+            ${esc(p.name)}
+          </b>
+
+          —
+
+          ${p.available
+            ? 'متوفر'
+            : 'غير متوفر'}
+
+        </span>
+
+
+        <span>
+
+          <button
+            onclick="edit(${p.id})"
+          >
+            تعديل
+          </button>
+
+
+          <button
+            class="danger"
+            onclick="del(${p.id})"
+          >
+            حذف
+          </button>
+
+        </span>
+
+      </div>
+
+    `).join('')
+
+    || 'لا توجد منتجات';
+
+}
+
+
+// =========================
+// تعديل منتج
+// =========================
+
+window.edit = id => {
+
+  let p =
+    items.find(x => x.id == id);
+
+
+  editing = id;
+
+
+  $('title').textContent =
+    'تعديل منتج';
+
+
+  $('code').value =
+    p.code || '';
+
+
+  $('name').value =
+    p.name || '';
+
+
+  $('category').value =
+    p.category || '';
+
+
+  $('price').value =
+    p.price ?? '';
+
+
+  $('description').value =
+    p.description || '';
+
+
+  $('available').checked =
+    !!p.available;
+
+
+  $('sort').value =
+    p.sort_order || 0;
+
+
+  $('cancel').classList.remove(
+    'hidden'
+  );
+
+};
+
+
+// =========================
+// حذف منتج
+// =========================
+
+window.del = async id => {
+
+  if(
+    confirm('حذف المنتج؟')
+  ){
+
+    await db
+      .from('products')
+      .delete()
+      .eq('id', id);
+
+    load();
+
+  }
+
+};
+
+
+// =========================
+// إعادة النموذج
+// =========================
+
+function reset(){
+
+  editing = null;
+
+
+  $('title').textContent =
+    'إضافة منتج';
+
+
+  [
+    'code',
+    'name',
+    'category',
+    'price',
+    'description',
+    'sort'
+  ].forEach(x => {
+
+    $(x).value = '';
+
+  });
+
+
+  $('available').checked =
+    true;
+
+
+  $('image').value =
+    '';
+
+
+  $('cancel').classList.add(
+    'hidden'
+  );
+
+
+  $('msg').textContent =
+    '';
+
+}
+
+
+// =========================
+// حماية النصوص
+// =========================
+
+function esc(v){
+
+  return String(v ?? '')
+    .replace(
+      /[&<>"']/g,
+      m => ({
+
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#039;'
+
+      }[m])
+    );
+
+}
+
+
+// =========================
+// مراقبة تسجيل الدخول
+// =========================
+
+db.auth.onAuthStateChange(
+  (_e, s) => show(!!s)
+);
+
+
+// تشغيل الصفحة
+init();
+
+</script>
+
+</body>
+</html>
