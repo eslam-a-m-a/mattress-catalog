@@ -6,18 +6,14 @@
 <title>شركة بيت المراتب للمفروشات</title>
 <style>
 *{box-sizing:border-box}
-html{
-scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 body{
 margin:0;
 font-family:Arial,Tahoma,sans-serif;
 background:#f7f8fa;
 color:#10233f;
 }
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 header{
 background:#06254d;
 color:#fff;
@@ -74,46 +70,34 @@ white-space:nowrap;
 color:white;
 text-decoration:none;
 }
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 main{
 width:100%;
 max-width:1600px;
 margin:auto;
-padding:10px 30px 30px;
+padding:20px 30px 30px;
 }
-/* =========================
-   HERO
-========================= */
+/* HERO - بدون أي صورة */
 .hero{
-height:190px;
-background:#fff;
+min-height:190px;
+background:linear-gradient(135deg,#ffffff,#edf4fb);
 border-radius:15px;
 overflow:hidden;
 margin-bottom:22px;
-position:relative;
 display:flex;
 align-items:center;
+justify-content:center;
 box-shadow:0 2px 12px #0000000b;
-}
-.hero-image{
-width:45%;
-height:100%;
-background-image:url("https://raw.githubusercontent.com/eslam-a-m-a/mattress-catalog/main/najma-logo.png.png");
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-background-color:#e8edf3;
+border:1px solid #e5e7eb;
 }
 .hero-content{
-flex:1;
-padding:25px 60px;
-text-align:right;
+width:100%;
+padding:35px 60px;
+text-align:center;
 }
 .hero-content h1{
 margin:0 0 12px;
-font-size:32px;
+font-size:34px;
 color:#06254d;
 }
 .hero-content p{
@@ -122,9 +106,11 @@ font-size:17px;
 line-height:1.8;
 color:#344054;
 }
-/* =========================
-   CATALOG
-========================= */
+/* MOBILE CATEGORY */
+.mobile-category-toggle{
+display:none;
+}
+/* CATALOG */
 .catalog-layout{
 display:grid;
 grid-template-columns:240px minmax(0,1fr);
@@ -135,9 +121,7 @@ direction:ltr;
 .products-area{
 direction:rtl;
 }
-/* =========================
-   SIDEBAR DESKTOP
-========================= */
+/* SIDEBAR */
 .sidebar{
 background:#fff;
 border:1px solid #e5e7eb;
@@ -170,7 +154,6 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 transition:.2s;
-width:100%;
 }
 .category-btn:hover{
 background:#f1f5fa;
@@ -205,19 +188,7 @@ border-radius:7px;
 font-weight:bold;
 font-size:14px;
 }
-/* =========================
-   MOBILE MENU BUTTON
-========================= */
-.mobile-menu-btn{
-display:none;
-}
-/* خلفية القائمة */
-.menu-overlay{
-display:none;
-}
-/* =========================
-   TOOLBAR
-========================= */
+/* TOOLBAR */
 .toolbar{
 display:grid;
 grid-template-columns:120px minmax(200px,1fr) 145px;
@@ -272,9 +243,7 @@ font-weight:bold;
 cursor:pointer;
 font-size:14px;
 }
-/* =========================
-   PRODUCTS
-========================= */
+/* PRODUCTS */
 .status{
 font-size:13px;
 color:#667085;
@@ -365,9 +334,7 @@ color:#06254d;
 .price span{
 font-size:13px;
 }
-/* =========================
-   SERVICES
-========================= */
+/* SERVICES */
 .services{
 margin-top:28px;
 background:#f0f2f5;
@@ -397,9 +364,7 @@ margin:0;
 font-size:12px;
 color:#667085;
 }
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 footer{
 background:#06254d;
 color:#fff;
@@ -410,35 +375,33 @@ font-size:14px;
 footer p{
 margin:0;
 }
-/* =========================
-   PRODUCT POPUP
-========================= */
+/* PRODUCT MODAL */
 .product-modal{
-display:none;
 position:fixed;
 inset:0;
-background:#000000aa;
-z-index:9999;
+background:#0008;
+display:none;
 align-items:center;
 justify-content:center;
 padding:20px;
+z-index:9999;
 }
 .product-modal.show{
 display:flex;
 }
 .modal-box{
 background:white;
-width:min(600px,100%);
+width:min(850px,100%);
 max-height:90vh;
 overflow:auto;
 border-radius:18px;
 position:relative;
-box-shadow:0 20px 60px #0005;
+padding:20px;
 }
 .modal-close{
 position:absolute;
 top:10px;
-left:10px;
+left:12px;
 width:38px;
 height:38px;
 border:0;
@@ -447,51 +410,45 @@ background:#06254d;
 color:white;
 font-size:22px;
 cursor:pointer;
-z-index:2;
 }
 .modal-image{
 width:100%;
-height:330px;
-object-fit:cover;
-background:#eef1f4;
+max-height:430px;
+object-fit:contain;
+background:#f3f5f7;
+border-radius:12px;
 }
-.modal-content{
-padding:22px;
-text-align:right;
-}
-.modal-content h2{
-margin:0 0 10px;
+.modal-title{
 font-size:25px;
+margin:15px 0 8px;
 color:#06254d;
 }
-.modal-code{
+.modal-code,
+.modal-category{
 color:#667085;
-margin-bottom:10px;
+margin:5px 0;
 }
 .modal-description{
-color:#475467;
 line-height:1.8;
-margin-bottom:15px;
+color:#475467;
+margin:15px 0;
 }
 .modal-price{
-font-size:24px;
+font-size:25px;
 font-weight:bold;
 color:#06254d;
-margin-bottom:15px;
+margin:15px 0;
 }
-.modal-whatsapp{
-display:block;
+/* EMPTY */
+.empty{
+background:#fff;
+padding:40px;
 text-align:center;
-background:#159447;
-color:white;
-text-decoration:none;
-padding:13px;
-border-radius:9px;
-font-weight:bold;
+border-radius:12px;
+color:#667085;
+grid-column:1/-1;
 }
-/* =========================
-   LARGE SCREENS
-========================= */
+/* LARGE */
 @media(min-width:1500px){
 .grid{
 grid-template-columns:repeat(6,minmax(0,1fr));
@@ -501,9 +458,7 @@ gap:20px;
 height:170px;
 }
 }
-/* =========================
-   TABLET
-========================= */
+/* TABLET */
 @media(max-width:1200px){
 .header{
 padding:0 20px;
@@ -516,9 +471,7 @@ padding-right:20px;
 grid-template-columns:repeat(4,minmax(0,1fr));
 }
 }
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 @media(max-width:800px){
 header{
 height:auto;
@@ -526,145 +479,110 @@ height:auto;
 .header{
 height:auto;
 padding:14px 15px;
-display:flex;
 flex-wrap:wrap;
-justify-content:space-between;
+justify-content:center;
 }
 .logo{
-font-size:19px;
+font-size:20px;
 }
-.logo small{
-font-size:9px;
+.nav{
+order:3;
+width:100%;
+justify-content:center;
+height:38px;
+gap:20px;
+}
+.nav a{
+padding:7px 0;
+font-size:13px;
 }
 .contact{
 display:none;
 }
-.nav{
-display:none;
+main{
+padding:10px;
+}
+/* الهيرو بدون صورة */
+.hero{
+min-height:150px;
+margin-bottom:15px;
+}
+.hero-content{
+padding:25px 15px;
+}
+.hero-content h1{
+font-size:25px;
+}
+.hero-content p{
+font-size:14px;
 }
 /* زر الثلاث شرط */
-.mobile-menu-btn{
+.mobile-category-toggle{
 display:flex;
 align-items:center;
-justify-content:center;
-width:46px;
-height:46px;
+justify-content:space-between;
+width:100%;
+height:48px;
 border:0;
-border-radius:12px;
-background:#fff;
-color:#06254d;
-font-size:27px;
+border-radius:10px;
+background:#06254d;
+color:#fff;
+font-family:inherit;
+font-size:15px;
+font-weight:bold;
+padding:0 15px;
 cursor:pointer;
-box-shadow:0 3px 12px #0003;
+margin-bottom:10px;
+}
+.mobile-category-toggle .hamburger{
+font-size:24px;
+line-height:1;
 }
 /* القائمة الجانبية */
+.catalog-layout{
+display:block;
+}
 .sidebar{
+display:block;
 position:fixed;
 top:0;
 right:-310px;
 width:290px;
 height:100vh;
-z-index:10001;
-border:0;
-border-radius:0;
-padding:25px 18px;
 overflow-y:auto;
-transition:right .28s ease;
-box-shadow:-8px 0 30px #0003;
+z-index:9998;
+border-radius:0;
+padding:25px 15px;
+transition:right .25s ease;
+box-shadow:-5px 0 25px #0003;
 }
 .sidebar.mobile-open{
 right:0;
 }
-.menu-overlay{
-position:fixed;
-inset:0;
-background:#0008;
-z-index:10000;
-display:none;
-}
-.menu-overlay.show{
-display:block;
-}
-.sidebar-close{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:25px;
-}
-.sidebar-close strong{
-font-size:20px;
-}
-.sidebar-close button{
-width:38px;
-height:38px;
-border:0;
-border-radius:50%;
-background:#06254d;
-color:white;
-font-size:20px;
-cursor:pointer;
-}
-/* المحتوى */
-main{
-padding:8px 10px 20px;
-}
-.hero{
-height:auto;
-display:block;
-margin-bottom:15px;
-border-radius:12px;
-}
-.hero-image{
-width:100%;
-height:170px;
-}
-.hero-content{
-padding:17px 12px;
-text-align:center;
-}
-.hero-content h1{
-font-size:23px;
-margin-bottom:7px;
-}
-.hero-content p{
-font-size:13px;
-line-height:1.6;
-}
-.catalog-layout{
-display:block;
-}
 .products-area{
 width:100%;
 }
-.toolbar{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
+/* خلفية القائمة */
+.category-overlay{
+display:none;
+position:fixed;
+inset:0;
+background:#0007;
+z-index:9997;
 }
-.search-box{
-grid-column:1 / -1;
-grid-row:1;
-height:46px;
+.category-overlay.show{
+display:block;
 }
-.sort{
-height:44px;
-grid-column:1;
-grid-row:2;
-}
-.all-products{
-height:44px;
-grid-column:2;
-grid-row:2;
-}
+/* المنتجات */
 .grid{
-grid-template-columns:1fr 1fr;
-gap:8px;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:9px;
 }
 .image-wrap{
 height:135px;
 }
 .card{
-border-radius:9px;
+border-radius:10px;
 }
 .card-body{
 padding:8px;
@@ -682,9 +600,19 @@ font-size:16px;
 .price span{
 font-size:11px;
 }
+/* البحث */
+.toolbar{
+grid-template-columns:1fr;
+gap:8px;
+}
+.sort,
+.search-box,
+.all-products{
+width:100%;
+}
 .services{
-grid-template-columns:1fr 1fr;
-padding:12px 5px;
+grid-template-columns:repeat(2,1fr);
+padding:14px 5px;
 gap:10px;
 }
 .service{
@@ -696,24 +624,21 @@ font-size:13px;
 .service p{
 font-size:10px;
 }
-.modal-image{
-height:260px;
 }
+/* SMALL PHONE */
+@media(max-width:480px){
+.hero{
+min-height:145px;
 }
-/* =========================
-   SMALL PHONE
-========================= */
-@media(max-width:360px){
-.logo{
-font-size:17px;
+.hero-content h1{
+font-size:22px;
 }
-.mobile-menu-btn{
-width:42px;
-height:42px;
-font-size:24px;
+.hero-content p{
+font-size:13px;
 }
 .grid{
 grid-template-columns:1fr 1fr;
+gap:8px;
 }
 .image-wrap{
 height:125px;
@@ -721,8 +646,23 @@ height:125px;
 .card h3{
 font-size:13px;
 }
+.description{
+font-size:10px;
+}
 .price{
 font-size:15px;
+}
+.services{
+grid-template-columns:1fr 1fr;
+}
+}
+/* VERY SMALL */
+@media(max-width:360px){
+.grid{
+grid-template-columns:1fr;
+}
+.image-wrap{
+height:190px;
 }
 }
 </style>
@@ -746,25 +686,10 @@ font-size:15px;
 ◉ تواصل واتساب
 </a>
 </div>
-<button
-id="mobileMenuBtn"
-class="mobile-menu-btn"
-aria-label="فتح التصنيفات">
-☰
-</button>
 </div>
 </header>
-<!-- خلفية القائمة على الهاتف -->
-<div
-id="menuOverlay"
-class="menu-overlay">
-</div>
 <main>
 <section class="hero">
-<div
-class="hero-image"
-id="heroImage">
-</div>
 <div class="hero-content">
 <h1>كتالوج منتجاتنا</h1>
 <p>
@@ -774,20 +699,23 @@ id="heroImage">
 </p>
 </div>
 </section>
+<button
+id="mobileCategoryToggle"
+class="mobile-category-toggle">
+<span>التصنيفات</span>
+<span class="hamburger">☰</span>
+</button>
+<div
+class="category-overlay"
+id="categoryOverlay">
+</div>
 <div
 class="catalog-layout"
 id="products">
 <aside
 class="sidebar"
 id="sidebar">
-<div class="sidebar-close">
-<strong>التصنيفات</strong>
-<button
-id="sidebarClose"
-aria-label="إغلاق">
-×
-</button>
-</div>
+<h2>التصنيفات</h2>
 <div
 class="category-list"
 id="categoryList">
@@ -799,9 +727,7 @@ data-category="">
 </button>
 </div>
 <div class="help-box">
-<h3>
-تحتاج مساعدة؟
-</h3>
+<h3>تحتاج مساعدة؟</h3>
 <p>
 فريقنا جاهز لخدمتك
 </p>
@@ -818,18 +744,10 @@ target="_blank">
 <select
 id="sort"
 class="sort">
-<option value="newest">
-الأحدث
-</option>
-<option value="name">
-الاسم
-</option>
-<option value="price-low">
-السعر الأقل
-</option>
-<option value="price-high">
-السعر الأعلى
-</option>
+<option value="newest">الأحدث</option>
+<option value="name">الاسم</option>
+<option value="price-low">السعر الأقل</option>
+<option value="price-high">السعر الأعلى</option>
 </select>
 <div class="search-box">
 <input
@@ -855,8 +773,8 @@ class="status">
 </div>
 <div
 id="errorBox"
-style="display:none"
-class="empty">
+class="empty"
+style="display:none">
 </div>
 <div
 id="grid"
@@ -867,39 +785,23 @@ class="grid">
 <section class="services">
 <div class="service">
 <div class="service-icon">🏷</div>
-<h3>
-أسعار تنافسية
-</h3>
-<p>
-أفضل الأسعار في السوق
-</p>
+<h3>أسعار تنافسية</h3>
+<p>أفضل الأسعار في السوق</p>
 </div>
 <div class="service">
 <div class="service-icon">🏅</div>
-<h3>
-جودة عالية
-</h3>
-<p>
-منتجات مختارة بعناية
-</p>
+<h3>جودة عالية</h3>
+<p>منتجات مختارة بعناية</p>
 </div>
 <div class="service">
 <div class="service-icon">🚚</div>
-<h3>
-شحن سريع
-</h3>
-<p>
-إلى جميع مناطق المملكة
-</p>
+<h3>شحن سريع</h3>
+<p>إلى جميع مناطق المملكة</p>
 </div>
 <div class="service">
 <div class="service-icon">♧</div>
-<h3>
-خدمة عملاء مميزة
-</h3>
-<p>
-نحن هنا لخدمتك
-</p>
+<h3>خدمة عملاء مميزة</h3>
+<p>نحن هنا لخدمتك</p>
 </div>
 </section>
 </main>
@@ -908,51 +810,22 @@ class="grid">
 جميع الحقوق محفوظة ©️ 2026 بيت المراتب
 </p>
 </footer>
-<!-- =========================
-     PRODUCT MODAL
-========================= -->
+<!-- PRODUCT MODAL -->
 <div
-id="productModal"
-class="product-modal">
+class="product-modal"
+id="productModal">
 <div class="modal-box">
 <button
-id="modalClose"
-class="modal-close">
+class="modal-close"
+id="modalClose">
 ×
 </button>
-<img
-id="modalImage"
-class="modal-image"
-src=""
-alt="">
-<div class="modal-content">
-<h2 id="modalName"></h2>
-<div
-id="modalCode"
-class="modal-code">
-</div>
-<div
-id="modalDescription"
-class="modal-description">
-</div>
-<div
-id="modalPrice"
-class="modal-price">
-</div>
-<a
-href="https://wa.me/966546510165"
-target="_blank"
-class="modal-whatsapp">
-استفسر عن المنتج عبر واتساب
-</a>
-</div>
+<div id="modalContent"></div>
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ==============================
-   SUPABASE
-============================== */
+/* SUPABASE */
 const SUPABASE_URL =
 "https://wmiszhoahvfsbmedjrbm.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY =
@@ -962,9 +835,7 @@ supabase.createClient(
 SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
-/* ==============================
-   VARIABLES
-============================== */
+/* VARIABLES */
 let products = [];
 let selectedCategory = "";
 let currentSearch = "";
@@ -982,36 +853,29 @@ const categoryList =
 document.getElementById("categoryList");
 const errorBox =
 document.getElementById("errorBox");
-const heroImage =
-document.getElementById("heroImage");
 const sidebar =
 document.getElementById("sidebar");
-const mobileMenuBtn =
-document.getElementById("mobileMenuBtn");
-const menuOverlay =
-document.getElementById("menuOverlay");
-const sidebarClose =
-document.getElementById("sidebarClose");
-/* ==============================
-   MODAL
-============================== */
+const mobileCategoryToggle =
+document.getElementById(
+"mobileCategoryToggle"
+);
+const categoryOverlay =
+document.getElementById(
+"categoryOverlay"
+);
 const productModal =
-document.getElementById("productModal");
+document.getElementById(
+"productModal"
+);
+const modalContent =
+document.getElementById(
+"modalContent"
+);
 const modalClose =
-document.getElementById("modalClose");
-const modalImage =
-document.getElementById("modalImage");
-const modalName =
-document.getElementById("modalName");
-const modalCode =
-document.getElementById("modalCode");
-const modalDescription =
-document.getElementById("modalDescription");
-const modalPrice =
-document.getElementById("modalPrice");
-/* ==============================
-   حماية النصوص
-============================== */
+document.getElementById(
+"modalClose"
+);
+/* حماية النصوص */
 function esc(value){
 return String(value ?? "")
 .replace(
@@ -1027,9 +891,7 @@ return {
 }
 );
 }
-/* ==============================
-   تحميل المنتجات
-============================== */
+/* تحميل المنتجات */
 async function loadProducts(){
 status.textContent =
 "جاري تحميل المنتجات...";
@@ -1054,14 +916,7 @@ return;
 }
 products =
 result.data || [];
-/* ==============================
-   صورة Najma في الإعلان
-============================== */
-heroImage.style.backgroundImage =
-"url('https://raw.githubusercontent.com/eslam-a-m-a/mattress-catalog/main/najma-logo.png.png')";
-/* التصنيفات */
 buildCategories();
-/* العرض */
 renderProducts();
 }catch(error){
 console.error(error);
@@ -1074,13 +929,13 @@ errorBox.innerHTML =
 esc(error.message);
 }
 }
-/* ==============================
-   التصنيفات
-============================== */
+/* التصنيفات */
 function buildCategories(){
 categoryList.innerHTML = "";
 const all =
-document.createElement("button");
+document.createElement(
+"button"
+);
 all.className =
 "category-btn " +
 (
@@ -1107,7 +962,9 @@ p => p.category
 categories.forEach(
 function(cat){
 const button =
-document.createElement("button");
+document.createElement(
+"button"
+);
 button.className =
 "category-btn " +
 (
@@ -1124,15 +981,16 @@ button.innerHTML =
 ${esc(cat)}
 <span>▣</span>
 `;
-categoryList.appendChild(button);
+categoryList.appendChild(
+button
+);
 });
 }
-/* ==============================
-   عرض المنتجات
-============================== */
+/* عرض المنتجات */
 function renderProducts(){
 let result =
 [...products];
+/* التصنيف */
 if(selectedCategory){
 result =
 result.filter(
@@ -1141,6 +999,7 @@ p.category ===
 selectedCategory
 );
 }
+/* البحث */
 if(currentSearch){
 const q =
 currentSearch.toLowerCase();
@@ -1162,9 +1021,12 @@ p.category
 if(sort.value === "name"){
 result.sort(
 (a,b) =>
-String(a.name || "")
-.localeCompare(
-String(b.name || ""),
+String(
+a.name || ""
+).localeCompare(
+String(
+b.name || ""
+),
 "ar"
 )
 );
@@ -1172,22 +1034,34 @@ String(b.name || ""),
 if(sort.value === "price-low"){
 result.sort(
 (a,b) =>
-Number(a.price || 0) -
-Number(b.price || 0)
+Number(
+a.price || 0
+) -
+Number(
+b.price || 0
+)
 );
 }
 if(sort.value === "price-high"){
 result.sort(
 (a,b) =>
-Number(b.price || 0) -
-Number(a.price || 0)
+Number(
+b.price || 0
+) -
+Number(
+a.price || 0
+)
 );
 }
 if(sort.value === "newest"){
 result.sort(
 (a,b) =>
-Number(b.id || 0) -
-Number(a.id || 0)
+Number(
+b.id || 0
+) -
+Number(
+a.id || 0
+)
 );
 }
 status.textContent =
@@ -1201,7 +1075,6 @@ grid.innerHTML = `
 `;
 return;
 }
-/* المنتجات */
 grid.innerHTML =
 result
 .map(
@@ -1218,7 +1091,8 @@ p.image_url
 <img
 class="product-image"
 src="${esc(p.image_url)}"
-alt="${esc(p.name)}">
+alt="${esc(p.name)}"
+loading="lazy">
 `
 :
 `
@@ -1278,91 +1152,7 @@ p.price
 })
 .join("");
 }
-/* ==============================
-   فتح المنتج
-============================== */
-grid.addEventListener(
-"click",
-function(e){
-const card =
-e.target.closest(".card");
-if(!card) return;
-const id =
-card.dataset.id;
-const product =
-products.find(
-p =>
-String(p.id) ===
-String(id)
-);
-if(!product) return;
-openProduct(product);
-});
-function openProduct(product){
-modalName.textContent =
-product.name || "";
-modalCode.textContent =
-product.code
-?
-"كود المنتج: " +
-product.code
-:
-"";
-modalDescription.textContent =
-product.description || "";
-if(
-product.price !== null &&
-product.price !== undefined &&
-product.price !== ""
-){
-modalPrice.textContent =
-Number(
-product.price
-).toLocaleString("ar-SA") +
-" ريال";
-}else{
-modalPrice.textContent =
-"";
-}
-if(product.image_url){
-modalImage.src =
-product.image_url;
-modalImage.style.display =
-"block";
-}else{
-modalImage.style.display =
-"none";
-}
-productModal.classList.add("show");
-document.body.style.overflow =
-"hidden";
-}
-function closeProduct(){
-productModal.classList.remove(
-"show"
-);
-document.body.style.overflow =
-"";
-}
-modalClose.onclick =
-closeProduct;
-productModal.addEventListener(
-"click",
-function(e){
-if(e.target === productModal){
-closeProduct();
-}
-});
-document.addEventListener(
-"keydown",
-function(e){
-if(e.key === "Escape"){
-closeProduct();
-}
-});
-/* ==============================
-   البحث
-============================== */
+/* البحث */
 function doSearch(){
 currentSearch =
 search.value.trim();
@@ -1384,14 +1174,10 @@ currentSearch =
 search.value.trim();
 renderProducts();
 });
-/* ==============================
-   الترتيب
-============================== */
+/* الترتيب */
 sort.onchange =
 renderProducts;
-/* ==============================
-   التصنيفات
-============================== */
+/* التصنيفات */
 categoryList.addEventListener(
 "click",
 function(e){
@@ -1399,18 +1185,19 @@ const button =
 e.target.closest(
 ".category-btn"
 );
-if(!button) return;
+if(!button)
+return;
 selectedCategory =
 button.dataset.category || "";
 buildCategories();
 renderProducts();
-closeMobileMenu();
+closeMobileCategories();
 });
-/* ==============================
-   كل المنتجات
-============================== */
+/* كل المنتجات */
 document
-.getElementById("allProducts")
+.getElementById(
+"allProducts"
+)
 .onclick =
 function(){
 selectedCategory = "";
@@ -1418,46 +1205,179 @@ currentSearch = "";
 search.value = "";
 buildCategories();
 renderProducts();
-window.scrollTo({
-top:
-document.getElementById(
-"products"
-).offsetTop - 20,
-behavior:"smooth"
-});
 };
-/* ==============================
-   قائمة الهاتف
-============================== */
-function openMobileMenu(){
+/* القائمة الجانبية */
+function openMobileCategories(){
 sidebar.classList.add(
 "mobile-open"
 );
-menuOverlay.classList.add(
+categoryOverlay.classList.add(
+"show"
+);
+}
+function closeMobileCategories(){
+sidebar.classList.remove(
+"mobile-open"
+);
+categoryOverlay.classList.remove(
+"show"
+);
+}
+mobileCategoryToggle.onclick =
+function(){
+if(
+sidebar.classList.contains(
+"mobile-open"
+)
+){
+closeMobileCategories();
+}else{
+openMobileCategories();
+}
+};
+categoryOverlay.onclick =
+closeMobileCategories;
+/* فتح صفحة المنتج */
+grid.addEventListener(
+"click",
+function(e){
+const card =
+e.target.closest(".card");
+if(!card)
+return;
+const id =
+card.dataset.id;
+const product =
+products.find(
+p =>
+String(p.id) ===
+String(id)
+);
+if(!product)
+return;
+openProduct(product);
+});
+/* تفاصيل المنتج */
+function openProduct(p){
+modalContent.innerHTML = `
+${
+p.image_url
+?
+`
+<img
+class="modal-image"
+src="${esc(p.image_url)}"
+alt="${esc(p.name)}">
+`
+:
+`
+<div class="no-image"
+style="height:300px">
+لا توجد صورة
+</div>
+`
+}
+<h2 class="modal-title">
+${esc(p.name || "")}
+</h2>
+${
+p.code
+?
+`
+<div class="modal-code">
+كود المنتج: ${esc(p.code)}
+</div>
+`
+:
+""
+}
+${
+p.category
+?
+`
+<div class="modal-category">
+التصنيف: ${esc(p.category)}
+</div>
+`
+:
+""
+}
+${
+p.description
+?
+`
+<div class="modal-description">
+${esc(p.description)}
+</div>
+`
+:
+""
+}
+${
+p.price !== null &&
+p.price !== undefined &&
+p.price !== ""
+?
+`
+<div class="modal-price">
+${Number(
+p.price
+).toLocaleString("ar-SA")}
+ ريال
+</div>
+`
+:
+""
+}
+<span class="badge ${
+p.available
+?
+"available"
+:
+"unavailable"
+}"
+style="position:static;display:inline-block">
+${
+p.available
+?
+"متوفر"
+:
+"غير متوفر"
+}
+</span>
+`;
+productModal.classList.add(
 "show"
 );
 document.body.style.overflow =
 "hidden";
 }
-function closeMobileMenu(){
-sidebar.classList.remove(
-"mobile-open"
-);
-menuOverlay.classList.remove(
+/* إغلاق صفحة المنتج */
+function closeProduct(){
+productModal.classList.remove(
 "show"
 );
 document.body.style.overflow =
 "";
 }
-mobileMenuBtn.onclick =
-openMobileMenu;
-sidebarClose.onclick =
-closeMobileMenu;
-menuOverlay.onclick =
-closeMobileMenu;
-/* ==============================
-   التشغيل
-============================== */
+modalClose.onclick =
+closeProduct;
+productModal.addEventListener(
+"click",
+function(e){
+if(e.target === productModal){
+closeProduct();
+}
+});
+document.addEventListener(
+"keydown",
+function(e){
+if(e.key === "Escape"){
+closeProduct();
+closeMobileCategories();
+}
+});
+/* التشغيل */
 loadProducts();
 </script>
 </body>
